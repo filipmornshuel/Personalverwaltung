@@ -1,5 +1,13 @@
 import javax.swing.*;
 
+/**
+ * a Participation in the company
+ *
+ * @author Isuf Hasani
+ * @since 2022-06-01
+ * @version 1.1
+ *
+ */
 public class Person {
 
     private ImageIcon photo;
