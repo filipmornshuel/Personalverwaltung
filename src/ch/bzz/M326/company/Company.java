@@ -1,7 +1,9 @@
+package ch.bzz.M326.company;
+
 import java.util.ArrayList;
 
 /**
- * a Company identified by the name
+ * a ch.bzz.M326.company.Company identified by the name
  *
  * @author Isuf Hasani
  * @since 2022-06-01
@@ -22,7 +24,7 @@ public class Company {
     }
 
     /**
-     * gets the Company name
+     * gets the ch.bzz.M326.company.Company name
      * @return value of name
      */
     public String getCompanyName() {

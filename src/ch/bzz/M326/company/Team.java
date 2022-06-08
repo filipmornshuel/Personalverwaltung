@@ -1,3 +1,5 @@
+package ch.bzz.M326.company;
+
 import java.util.ArrayList;
 
 public class Team {

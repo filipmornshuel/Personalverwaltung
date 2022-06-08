@@ -1,7 +1,12 @@
+package ch.bzz.M326.employees;
+
+import ch.bzz.M326.company.JobFunctions;
+import ch.bzz.M326.company.Team;
+
 import java.util.ArrayList;
 
 /**
- * a Participation in the company
+ * a ch.bzz.M326.employees.Participation in the company
  *
  * @author Isuf Hasani
  * @since 2022-06-01

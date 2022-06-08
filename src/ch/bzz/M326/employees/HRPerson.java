@@ -1,7 +1,13 @@
+package ch.bzz.M326.employees;
+
+import ch.bzz.M326.employees.Person;
+import ch.bzz.M326.log.LogBook;
+import ch.bzz.M326.log.Useraction;
+
 import javax.swing.*;
 
 /**
- * a Person with "HR" rights
+ * a ch.bzz.M326.employees.Person with "HR" rights
  *
  * @author Isuf Hasani
  * @since 2022-06-01
@@ -14,7 +20,7 @@ public class HRPerson extends Person {
     private String pwd;
 
     /**
-     * constuctor of class HRPerson
+     * constuctor of class ch.bzz.M326.employees.HRPerson
      * @param fristName
      * @param lastName
      * @param photo
@@ -32,7 +38,7 @@ public class HRPerson extends Person {
      */
     public void change(Person person, int modus){
         if (this.modus == modus){
-            System.out.println("This Person have already this modus");
+            System.out.println("This person already has this modus");
 
         }else {
             this.modus = modus;
@@ -41,7 +47,7 @@ public class HRPerson extends Person {
     }
 
     /**
-     * set the modus of the HRPerson
+     * set the modus of the ch.bzz.M326.employees.HRPerson
      * @param modus
      */
     public void setModus(int modus) {
@@ -57,7 +63,7 @@ public class HRPerson extends Person {
     }
 
     /**
-     * set the password of HRPerson
+     * set the password of ch.bzz.M326.employees.HRPerson
      * @param pwd   password as String
      */
     public void setPwd(String pwd) {
@@ -65,7 +71,7 @@ public class HRPerson extends Person {
     }
 
     /**
-     * get the password of HRPerson
+     * get the password of ch.bzz.M326.employees.HRPerson
      * @return pwd as String
      */
     public String getPwd() {
@@ -73,7 +79,7 @@ public class HRPerson extends Person {
     }
 
     /**
-     * write entry in the LogBook
+     * write entry in the ch.bzz.M326.log.LogBook
      * @param useraction
      * @param person
      */
@@ -82,7 +88,5 @@ public class HRPerson extends Person {
         LogBook log = new LogBook();
         log.getLogBookInstance();
         log.addEntry(ua.getEntry());
-
-
     }
 }

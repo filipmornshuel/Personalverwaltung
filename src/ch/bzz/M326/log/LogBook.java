@@ -1,9 +1,11 @@
+package ch.bzz.M326.log;
+
 import java.io.*;
 import java.util.Vector;
 
 
 /**
- * a LogBook who list all actions in the application
+ * a ch.bzz.M326.log.LogBook who list all actions in the application
  *
  * @author Isuf Hasani
  * @since 2022-06-01
@@ -20,7 +22,7 @@ public class LogBook {
     private Boolean fileWritingEnabled = false;
 
     /**
-     * constructor of the class LogBook without parameter
+     * constructor of the class ch.bzz.M326.log.LogBook without parameter
      */
     public LogBook(){
         file = new File("logboook.log");

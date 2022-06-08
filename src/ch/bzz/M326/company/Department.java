@@ -1,3 +1,7 @@
+package ch.bzz.M326.company;
+
+import ch.bzz.M326.employees.Person;
+
 import java.util.ArrayList;
 
 /**
@@ -22,7 +26,7 @@ public class Department {
     }
 
     /**
-     * gets the Company name
+     * gets the ch.bzz.M326.company.Company name
      * @return value of name
      */
     public String getName() {

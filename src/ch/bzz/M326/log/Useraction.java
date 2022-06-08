@@ -1,3 +1,8 @@
+package ch.bzz.M326.log;
+
+import ch.bzz.M326.employees.HRPerson;
+import ch.bzz.M326.employees.Person;
+
 import javax.swing.*;
 import java.util.ArrayList;
 
