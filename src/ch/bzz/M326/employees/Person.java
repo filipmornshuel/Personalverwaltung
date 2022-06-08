@@ -48,4 +48,8 @@ public class Person {
     public String getLastName() {
         return lastName;
     }
+
+    public Participation getParticipation(){
+        return participation;
+    }
 }
