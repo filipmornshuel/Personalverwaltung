@@ -4,7 +4,10 @@ import ch.bzz.M326.employees.HRPerson;
 import ch.bzz.M326.employees.Person;
 
 import javax.swing.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Useraction {
 
@@ -17,15 +20,13 @@ public class Useraction {
 
 
     public Useraction(HRPerson hrPerson, Person person, int action){
-        hrPerson.getFristName();
-        hrPerson.getLastName();
+        actionDescription = new ArrayList<>(Arrays.asList(" create person ", " change value ", " set assignment ", " delete person "));
+        entry = LocalDate.now() + " " + LocalTime.now() + " : " + hrPerson.getFristName() + " " + hrPerson.getLastName() + " do";
         if (action >= 0 && action < actionDescription.size()){
-            person.getFristName();
-            person.getLastName();
+            entry += actionDescription.get(action) + "for " + person.getFristName() + " " + person.getLastName();
         }else {
-            System.out.println("unknown action");
+            entry += "unknown action";
         }
-
     }
 
     public String getEntry(){
