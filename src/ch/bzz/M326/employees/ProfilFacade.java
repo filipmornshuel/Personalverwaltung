@@ -37,6 +37,6 @@ public class ProfilFacade {
    }
 
    public Vector<String> getTeams(){
-
+      return null;
    }
 }
