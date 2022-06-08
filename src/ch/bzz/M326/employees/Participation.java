@@ -6,7 +6,7 @@ import ch.bzz.M326.company.Team;
 import java.util.ArrayList;
 
 /**
- * a ch.bzz.M326.employees.Participation in the company
+ * a Participation in the company
  *
  * @author Isuf Hasani
  * @since 2022-06-01

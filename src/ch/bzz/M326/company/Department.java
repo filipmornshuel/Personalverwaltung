@@ -26,7 +26,7 @@ public class Department {
     }
 
     /**
-     * gets the ch.bzz.M326.company.Company name
+     * gets the Company name
      * @return value of name
      */
     public String getName() {

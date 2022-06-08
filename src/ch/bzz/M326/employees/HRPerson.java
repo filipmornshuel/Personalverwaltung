@@ -7,7 +7,7 @@ import ch.bzz.M326.log.Useraction;
 import javax.swing.*;
 
 /**
- * a ch.bzz.M326.employees.Person with "HR" rights
+ * a Person with "HR" rights
  *
  * @author Isuf Hasani
  * @since 2022-06-01
@@ -20,7 +20,7 @@ public class HRPerson extends Person {
     private String pwd;
 
     /**
-     * constuctor of class ch.bzz.M326.employees.HRPerson
+     * constuctor of class HRPerson
      * @param fristName
      * @param lastName
      * @param photo
@@ -47,7 +47,7 @@ public class HRPerson extends Person {
     }
 
     /**
-     * set the modus of the ch.bzz.M326.employees.HRPerson
+     * set the modus of the HRPerson
      * @param modus
      */
     public void setModus(int modus) {
@@ -63,7 +63,7 @@ public class HRPerson extends Person {
     }
 
     /**
-     * set the password of ch.bzz.M326.employees.HRPerson
+     * set the password of HRPerson
      * @param pwd   password as String
      */
     public void setPwd(String pwd) {
@@ -71,7 +71,7 @@ public class HRPerson extends Person {
     }
 
     /**
-     * get the password of ch.bzz.M326.employees.HRPerson
+     * get the password of HRPerson
      * @return pwd as String
      */
     public String getPwd() {
@@ -79,7 +79,7 @@ public class HRPerson extends Person {
     }
 
     /**
-     * write entry in the ch.bzz.M326.log.LogBook
+     * write entry in the LogBook
      * @param useraction
      * @param person
      */

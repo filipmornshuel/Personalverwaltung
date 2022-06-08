@@ -5,7 +5,7 @@ import java.util.Vector;
 
 
 /**
- * a ch.bzz.M326.log.LogBook who list all actions in the application
+ * a LogBook who list all actions in the application
  *
  * @author Isuf Hasani
  * @since 2022-06-01
@@ -22,12 +22,12 @@ public class LogBook {
     private Boolean fileWritingEnabled = false;
 
     /**
-     * constructor of the class ch.bzz.M326.log.LogBook without parameter
+     * constructor of the class LogBook without parameter
      */
     public LogBook(){
         file = new File("logboook.log");
         try {
-            if (file.createNewFile() == false){
+            if (!file.createNewFile()){
                 reader = new BufferedReader(new FileReader(file));
                 readFile();
                 reader.close();
@@ -58,7 +58,7 @@ public class LogBook {
      * @param entry
      */
     public void addEntry(String entry){
-        if (fileWritingEnabled == true){
+        if (fileWritingEnabled){
             writeFile(entry);
         }
     }
@@ -129,7 +129,7 @@ public class LogBook {
     private void readFile(){
         while (true) {
             try {
-                if (!(reader.ready() == true)) break;
+                if (!(reader.ready())) break;
             } catch (IOException e) {
                 e.printStackTrace();
             }
