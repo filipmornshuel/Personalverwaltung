@@ -14,6 +14,8 @@ public class Company {
 
     private String name;
     private ArrayList<Department> departments;
+    private ArrayList<JobFunctions> jobFunctions;
+    private ArrayList<Team> teams;
 
     /**
      * constuctor of class department
@@ -70,5 +72,37 @@ public class Company {
      */
     public int getNumberOfDepartments(){
         return departments.size();
+    }
+
+    public ArrayList<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(ArrayList<Department> departments) {
+        this.departments = departments;
+    }
+
+    public void setJobFunctions(ArrayList<JobFunctions> jobFunctions) {
+        this.jobFunctions = jobFunctions;
+    }
+
+    public void setTeams(ArrayList<Team> teams) {
+        this.teams = teams;
+    }
+
+    public ArrayList<Team> getTeams() {
+        return teams;
+    }
+
+    public JobFunctions getJobFunction(int index){
+        return jobFunctions.get(index);
+    }
+
+    public Team getTeam(int index){
+        return teams.get(index);
+    }
+
+    public ArrayList<JobFunctions> getJobFunctions() {
+        return jobFunctions;
     }
 }
