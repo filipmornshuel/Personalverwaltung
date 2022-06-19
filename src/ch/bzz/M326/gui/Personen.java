@@ -80,19 +80,7 @@ public class Personen extends JPanel {
         personenDetailBildNebenPanel = new JPanel();
         personenDetailBildNebenPanel.setLayout(new BoxLayout(personenDetailBildNebenPanel, BoxLayout.PAGE_AXIS));
 
-
-        //personenDetailPanel.setLayout(gridBagLayout);
-
-        //personenDetailPanel = new JPanel();
-        //personenDetailPanel.setLayout(new BoxLayout(personenDetailPanel, BoxLayout.PAGE_AXIS));
         personenListButtonsPanel = new JPanel(new GridLayout(1,3));
-
-        //personenDetailRollenPanel = new JPanel(new GridLayout(2,2));
-        //personenDetailPanel = new JPanel();
-
-        //personenDetailPanel.setLayout(new BoxLayout(personenDetailPanel, BoxLayout.PAGE_AXIS));
-        //personenDetailRollenPanel.setLayout(new BoxLayout(personenDetailRollenPanel, BoxLayout.PAGE_AXIS));
-
 
         //Betreffend Liste
         personen = new ArrayList<>();
