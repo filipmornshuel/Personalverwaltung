@@ -20,11 +20,21 @@ public class Person {
     private String lastName;
     private Participation participation;
     private Department department;
+    private String role;
 
-    public Person(String fristName, String lastName, ImageIcon photo){
+    public Person(String fristName, String lastName, ImageIcon photo, String role){
         this.fristName = fristName;
         this.lastName = lastName;
         this.photo = photo;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setFristName(String fristName) {

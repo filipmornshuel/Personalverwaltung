@@ -6,17 +6,18 @@ import javax.swing.*;
 import java.util.Vector;
 
 /**
- * This class is an interface for all data that is needed for the Tab "Zuordnung"
+ * This class is an interface for all data that is needed for the Tab "Übersicht"
  * @author Nadim Bhatti
  * @since 2022-06-15
  * @version 1.0
  */
-public class ZuordnungFacade {
+public class UebersichtFacade {
 
    private Company company;
 
-   public ZuordnungFacade(Company company){}
-
+   public UebersichtFacade(Company company){
+      this.company = company;
+   }
 
    /**
     * gets all the employees as a Person

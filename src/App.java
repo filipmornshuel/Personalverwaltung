@@ -1,6 +1,8 @@
 import ch.bzz.M326.company.Company;
 import ch.bzz.M326.company.Department;
 
+import java.util.Random;
+
 import java.util.ArrayList;
 
 public class App {
