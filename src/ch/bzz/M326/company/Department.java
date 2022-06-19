@@ -57,6 +57,10 @@ public class Department {
         members.remove(index);
     }
 
+    public void removeMemberByPerson(Person person){
+        members.remove(person);
+    }
+
     /**
      * gets the number of members
      * @return number of members

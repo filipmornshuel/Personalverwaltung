@@ -1,5 +1,6 @@
 package ch.bzz.M326.employees;
 
+import ch.bzz.M326.company.Department;
 import ch.bzz.M326.employees.Participation;
 
 import javax.swing.*;
@@ -18,11 +19,22 @@ public class Person {
     private String fristName;
     private String lastName;
     private Participation participation;
+    private Department department;
+    private String role;
 
-    public Person(String fristName, String lastName, ImageIcon photo){
+    public Person(String fristName, String lastName, ImageIcon photo, String role){
         this.fristName = fristName;
         this.lastName = lastName;
         this.photo = photo;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setFristName(String fristName) {
@@ -51,5 +63,23 @@ public class Person {
 
     public Participation getParticipation(){
         return participation;
+    }
+
+    public void setParticipation(Participation participation) {
+        this.participation = participation;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        if(department == null){
+            this.department = department;
+        }else{
+            this.department.removeMemberByPerson(this);
+            this.department = department;
+            this.department.addMember(this);
+        }
     }
 }
