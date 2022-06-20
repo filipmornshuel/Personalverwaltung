@@ -22,11 +22,10 @@ public class Person {
     private Department department;
     private String role;
 
-    public Person(String fristName, String lastName, ImageIcon photo, String role){
+    public Person(String fristName, String lastName, ImageIcon photo){
         this.fristName = fristName;
         this.lastName = lastName;
         this.photo = photo;
-        this.role = role;
     }
 
     public String getRole() {

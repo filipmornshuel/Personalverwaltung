@@ -14,11 +14,14 @@ public class JobFunctions {
 
     private ArrayList<String> designations;
     private String name;
+    private int namePerson;
 
     /**
      * default constuctor of class department
      */
-    public JobFunctions(){}
+    public JobFunctions(String name){
+        this.name = name;
+    }
 
     /**
      * get name of the job function

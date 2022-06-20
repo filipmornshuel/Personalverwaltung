@@ -34,6 +34,14 @@ public class Department {
     }
 
     /**
+     * sets the name
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * add the person to the ArrayList
      * @param person
      */

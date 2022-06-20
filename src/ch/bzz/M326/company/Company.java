@@ -26,6 +26,54 @@ public class Company {
     }
 
     /**
+     * adds a jobfunction to its vector
+     * @param jobFunctions function
+     */
+    public void addFunction(JobFunctions jobFunctions){
+        this.jobFunctions.add(jobFunctions);
+    }
+
+    /**
+     * sets the name
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * removes a department
+     * @param department
+     */
+    public void removeDepartment(Department department){
+        this.departments.remove(department);
+    }
+
+    /**
+     * removes jobfunction
+     * @param jobFunctions
+     */
+    public void removeFunction(JobFunctions jobFunctions){
+        this.jobFunctions.remove(jobFunctions);
+    }
+
+    /**
+     * removes a team
+     * @param team
+     */
+    public void removeTeam(Team team){
+        this.teams.remove(team);
+    }
+
+    /**
+     * adds a team to its vector
+     * @param team team
+     */
+    public void addTeam(Team team){
+        this.teams.add(team);
+    }
+
+    /**
      * gets the Company name
      * @return value of name
      */

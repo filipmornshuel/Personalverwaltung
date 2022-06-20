@@ -27,6 +27,31 @@ public class StammdatenFacade {
    }
 
    /**
+    * this method adds a department
+    * @param department department
+    */
+   public void addDepartment(Department department){
+      company.addDepartment(department);
+   }
+
+   /**
+    * removes a department
+    * @param department
+    */
+   public void deleteDepartment(Department department){
+      company.removeDepartment(department);
+   }
+
+   /**
+    * updates a department
+    * @param department
+    * @param name name as String
+    */
+   public void updateDepartment(Department department, String name){
+      department.setName(name);
+   }
+
+   /**
     * gets all functions
     * @return all functions as a String Vector
     */
@@ -36,6 +61,31 @@ public class StammdatenFacade {
          allJobFunctions.add(company.getJobFunction(i).getName());
       }
       return allJobFunctions;
+   }
+
+   /**
+    * this method adds a function
+    * @param jobFunctions department
+    */
+   public void addJobFunction(JobFunctions jobFunctions){
+      company.addFunction(jobFunctions);
+   }
+
+   /**
+    * removes a jobfunction
+    * @param jobFunctions
+    */
+   public void deleteFunction(JobFunctions jobFunctions){
+      company.removeFunction(jobFunctions);
+   }
+
+   /**
+    * updates a jobfunction
+    * @param jobFunctions
+    * @param name name as String
+    */
+   public void updateFunction(JobFunctions jobFunctions, String name){
+      jobFunctions.setName(name);
    }
 
    /**
@@ -50,8 +100,45 @@ public class StammdatenFacade {
       return allTeams;
    }
 
+   /**
+    * this method adds a team
+    * @param team team
+    */
+   public void addTeam(Team team){
+      company.addTeam(team);
+   }
+
+   /**
+    * removes a team
+    * @param team
+    */
+   public void deleteTeam(Team team){
+      company.removeTeam(team);
+   }
+
+   /**
+    * updates a team
+    * @param team
+    * @param name
+    */
+   public void updateTeam(Team team, String name){
+      team.setName(name);
+   }
+
+   /**
+    * gets the name of the company
+    * @return name of company as String
+    */
    public String getFirmaName(){
       return company.getCompanyName();
+   }
+
+   /**
+    * sets the name for the company
+    * @param name name as String
+    */
+   public void setFirmaName(String name){
+      company.setName(name);
    }
 
 }
