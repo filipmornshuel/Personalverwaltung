@@ -1,6 +1,9 @@
 package ch.bzz.M326.employees;
 
 import ch.bzz.M326.company.Company;
+import ch.bzz.M326.company.Department;
+import ch.bzz.M326.company.JobFunctions;
+import ch.bzz.M326.company.Team;
 
 import javax.swing.*;
 import java.util.Vector;
@@ -15,7 +18,9 @@ public class ZuordnungFacade {
 
    private Company company;
 
-   public ZuordnungFacade(Company company){}
+   public ZuordnungFacade(Company company){
+      this.company = company;
+   }
 
 
    /**
@@ -23,13 +28,7 @@ public class ZuordnungFacade {
     * @return all employees
     */
    public Vector<Person> getMitarbeiterListe(){
-      Vector<Person> allPersons = new Vector<>();
-      for (int i = 0; i < company.getDepartments().size(); i++) {
-         for (int j = 0; j < company.getDepartments(i).getNumberOfMembers(); j++) {
-            allPersons.add(company.getDepartments(i).getMembers(j));
-         }
-      }
-      return allPersons;
+      return company.getPeople();
    }
 
    /**
@@ -49,11 +48,7 @@ public class ZuordnungFacade {
     * @return all functions as a String Vector
     */
    public Vector<String> getAllJobFunctions(){
-      Vector<String> allJobFunctions = new Vector<>();
-      for (int i = 0; i < company.getJobFunctions().size(); i++) {
-         allJobFunctions.add(company.getJobFunction(i).getName());
-      }
-      return allJobFunctions;
+      return company.getJobFunctions().getDesignations();
    }
 
    /**
@@ -61,11 +56,7 @@ public class ZuordnungFacade {
     * @return all teams as a String Vector
     */
    public Vector<String> getAllTeams(){
-      Vector<String> allTeams = new Vector<>();
-      for (int i = 0; i < company.getTeams().size(); i++) {
-         allTeams.add(company.getTeam(i).getName());
-      }
-      return allTeams;
+      return company.getTeams().getDesignations();
    }
 
    /**
@@ -86,6 +77,33 @@ public class ZuordnungFacade {
     */
    public String getName(Person person){
       return person.getFristName() + " " + person.getLastName();
+   }
+
+   /**
+    * sets a department for a person
+    * @param person
+    * @param department
+    */
+   public void setDepartment(Person person, Department department){
+      person.setDepartment(department);
+   }
+
+   /**
+    * adds a function to a person
+    * @param person
+    * @param jobFunctions
+    */
+   public void addFunction(Person person, String jobFunctions){
+      person.getParticipation().addFunction(jobFunctions);
+   }
+
+   /**
+    * adds a team to a person
+    * @param person
+    * @param team
+    */
+   public void addTeam(Person person, String team){
+      person.getParticipation().addTeam(team);
    }
 
    /**

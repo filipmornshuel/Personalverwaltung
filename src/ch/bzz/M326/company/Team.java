@@ -1,15 +1,24 @@
 package ch.bzz.M326.company;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Team {
 
-    private ArrayList<String> designations;
+    private Vector<String> designations;
     private String name;
 
+    public  void removeTeam(String team){
+        designations.remove(team);
+    }
+
+    public Vector<String> getDesignations() {
+        return designations;
+    }
 
     public Team(String name){
         this.name = name;
+        designations = new Vector<>();
     }
 
     public String getName() {

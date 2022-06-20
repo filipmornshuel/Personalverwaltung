@@ -1,6 +1,10 @@
 package ch.bzz.M326.company;
 
+import ch.bzz.M326.employees.HRPerson;
+import ch.bzz.M326.employees.Person;
+
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * a Company identified by the name
@@ -13,9 +17,11 @@ import java.util.ArrayList;
 public class Company {
 
     private String name;
-    private ArrayList<Department> departments;
-    private ArrayList<JobFunctions> jobFunctions;
-    private ArrayList<Team> teams;
+    private Vector<Department> departments;
+    private JobFunctions jobFunctions;
+    private Team teams;
+    private Vector<Person> people;
+    private Vector<HRPerson> hrPeople;
 
     /**
      * constuctor of class department
@@ -23,14 +29,73 @@ public class Company {
      */
     public Company(String name){
         this.name = name;
+        people = new Vector<>();
+        departments = new Vector<>();
+        hrPeople = new Vector<>();
     }
 
     /**
-     * adds a jobfunction to its vector
-     * @param jobFunctions function
+     * adds a hrPerson
+     * @param hrPerson
      */
-    public void addFunction(JobFunctions jobFunctions){
-        this.jobFunctions.add(jobFunctions);
+    public void addHRPerson(HRPerson hrPerson){
+        hrPeople.add(hrPerson);
+    }
+
+    /**
+     * removes a hrPerson
+     * @param hrPerson
+     */
+    public void removeHRPerson(HRPerson hrPerson){
+        hrPeople.remove(hrPerson);
+    }
+
+    /**
+     * sets the HRPeople
+     * @param hrPeople
+     */
+    public void setHrPeople(Vector<HRPerson> hrPeople) {
+        this.hrPeople = hrPeople;
+    }
+
+    /**
+     * adds a person
+     * @param person
+     */
+    public void addPerson(Person person){
+        people.add(person);
+    }
+
+    /**
+     * removes a person
+     * @param person
+     */
+    public void removePerson(Person person){
+        people.remove(person);
+    }
+
+    /**
+     * sets the people
+     * @param people
+     */
+    public void setPeople(Vector<Person> people) {
+        this.people = people;
+    }
+
+    /**
+     * gets all people
+     * @return
+     */
+    public Vector<Person> getPeople() {
+        return people;
+    }
+
+    /**
+     * adds a jobfunction
+     * @param jobfunction function
+     */
+    public void addFunction(String jobfunction){
+        this.jobFunctions.addJobFunction(jobfunction);
     }
 
     /**
@@ -51,26 +116,26 @@ public class Company {
 
     /**
      * removes jobfunction
-     * @param jobFunctions
+     * @param jobFunction
      */
-    public void removeFunction(JobFunctions jobFunctions){
-        this.jobFunctions.remove(jobFunctions);
+    public void removeFunction(String jobFunction){
+        this.jobFunctions.removeJobFunction(jobFunction);
     }
 
     /**
      * removes a team
      * @param team
      */
-    public void removeTeam(Team team){
-        this.teams.remove(team);
+    public void removeTeam(String team){
+        this.teams.removeTeam(team);
     }
 
     /**
-     * adds a team to its vector
+     * adds a team
      * @param team team
      */
-    public void addTeam(Team team){
-        this.teams.add(team);
+    public void addTeam(String team){
+        this.teams.addTeam(team);
     }
 
     /**
@@ -122,35 +187,70 @@ public class Company {
         return departments.size();
     }
 
-    public ArrayList<Department> getDepartments() {
+    /**
+     * gets the department
+     * @return
+     */
+    public Vector<Department> getDepartments() {
         return departments;
     }
 
-    public void setDepartments(ArrayList<Department> departments) {
+    /**
+     * sets thed departments
+     * @param departments
+     */
+    public void setDepartments(Vector<Department> departments) {
         this.departments = departments;
     }
 
-    public void setJobFunctions(ArrayList<JobFunctions> jobFunctions) {
+    /**
+     * gets the jobfunctions
+     * @param jobFunctions
+     */
+    public void setJobFunctions(JobFunctions jobFunctions) {
         this.jobFunctions = jobFunctions;
     }
 
-    public void setTeams(ArrayList<Team> teams) {
+    /**
+     * sets the teams
+     * @param teams
+     */
+    public void setTeams(Team teams) {
         this.teams = teams;
     }
 
-    public ArrayList<Team> getTeams() {
+    /**
+     * gets the teams
+     * @return
+     */
+    public Team getTeams() {
         return teams;
     }
 
-    public JobFunctions getJobFunction(int index){
-        return jobFunctions.get(index);
+    /**
+     * gets a jobfunction
+     * @param index
+     * @return
+     */
+    public String getJobFunction(int index){
+        return jobFunctions.getJobFunction(index);
     }
 
-    public Team getTeam(int index){
-        return teams.get(index);
+    /**
+     * gets a team
+     * @param index
+     * @return
+     */
+    public String getTeam(int index){
+        return teams.getTeam(index);
     }
 
-    public ArrayList<JobFunctions> getJobFunctions() {
+    /**
+     * gets a jobfunction
+     * @return
+     */
+    public JobFunctions getJobFunctions() {
         return jobFunctions;
     }
+
 }

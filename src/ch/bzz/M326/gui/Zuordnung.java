@@ -1,5 +1,8 @@
 package ch.bzz.M326.gui;
 
+import ch.bzz.M326.company.Company;
+import ch.bzz.M326.employees.ZuordnungFacade;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -42,14 +45,15 @@ public class Zuordnung extends JPanel {
     private ArrayList<String> funktionenListe;
     private ArrayList<String> teamsListe;
 
+    private Company company;
 
     /**
      * Konstruktor für das Aufrufen der createZurodnungComponents-Methode
      * @param pane Weitergabe des JTabbedPanes
      */
-    public Zuordnung(JTabbedPane pane){
+    public Zuordnung(JTabbedPane pane, Company company){
         this.pane = pane;
-
+        this.company = company;
         createZuordnungComponents();
         pane.addTab("Zuordnung", personenPanel);
 
@@ -59,6 +63,8 @@ public class Zuordnung extends JPanel {
      * Methode zum Initialisieren der Attribute
      */
     public void createZuordnungComponents(){
+
+        ZuordnungFacade zuordnungFacade = new ZuordnungFacade(company);
 
         personenPanel = new JPanel(new BorderLayout());
         personenListPanel = new JPanel(new BorderLayout());
@@ -82,13 +88,9 @@ public class Zuordnung extends JPanel {
 
 
         //Betreffend Liste
-        personen = new ArrayList<>();
-        for (int i = 0; i < 30; i++){
-            personen.add("textjebigakockasdfghjk                  ");
-        }
         personenPanel.setBorder(BorderFactory.createTitledBorder("Personen bearbeiten:"));
         personenListe = new JList<>();
-        personenListe = new JList(personen.toArray());
+        personenListe = new JList(zuordnungFacade.getMitarbeiterNameListe().toArray());
         übersicht = new JLabel("Übersicht");
         personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
         personenListPanel.add(personenScrollPane, BorderLayout.CENTER);

@@ -1,6 +1,7 @@
 package ch.bzz.M326.company;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * a job function identified by the name
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  */
 public class JobFunctions {
 
-    private ArrayList<String> designations;
+    private Vector<String> designations;
     private String name;
     private int namePerson;
 
@@ -20,6 +21,7 @@ public class JobFunctions {
      * default constuctor of class department
      */
     public JobFunctions(String name){
+        designations = new Vector<>();
         this.name = name;
     }
 
@@ -62,6 +64,14 @@ public class JobFunctions {
      */
     public void removeJobFunction(int index){
         designations.remove(index);
+    }
+
+    public void removeJobFunction(String jobfunction){
+        designations.remove(jobfunction);
+    }
+
+    public Vector<String> getDesignations() {
+        return designations;
     }
 
     /**

@@ -1,5 +1,7 @@
 package ch.bzz.M326.gui;
 
+import ch.bzz.M326.company.Company;
+
 import javax.swing.*;
 
 /**
@@ -18,14 +20,14 @@ public class mainFrame extends JFrame {
     /**
      * Konstruktor für das MainFrame
      */
-    public mainFrame(){
+    public mainFrame(Company company){
         setVisible(true);
         setResizable(false);
         setSize(600,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pane = new JTabbedPane();
         getContentPane().add(pane);
-        zuordnungTab = new Zuordnung(pane);
+        zuordnungTab = new Zuordnung(pane, company);
         personenTab = new Personen(pane);
         stammdatenTab = new Stammdaten(pane);
         logbuchTab = new Logbuch(pane);

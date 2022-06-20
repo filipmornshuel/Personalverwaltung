@@ -5,7 +5,7 @@ import java.util.Vector;
 /**
  * This class is an interface for all data that is needed for the Tab "Stammdaten"
  * @author Nadim Bhatti
- * @since 2022-06-15
+ * @since 2022-06-20
  * @version 1.0
  */
 public class StammdatenFacade {
@@ -56,18 +56,14 @@ public class StammdatenFacade {
     * @return all functions as a String Vector
     */
    public Vector<String> getAllJobFunctions(){
-      Vector<String> allJobFunctions = new Vector<>();
-      for (int i = 0; i < company.getJobFunctions().size(); i++) {
-         allJobFunctions.add(company.getJobFunction(i).getName());
-      }
-      return allJobFunctions;
+      return company.getJobFunctions().getDesignations();
    }
 
    /**
     * this method adds a function
-    * @param jobFunctions department
+    * @param jobFunctions function
     */
-   public void addJobFunction(JobFunctions jobFunctions){
+   public void addJobFunction(String jobFunctions){
       company.addFunction(jobFunctions);
    }
 
@@ -75,17 +71,18 @@ public class StammdatenFacade {
     * removes a jobfunction
     * @param jobFunctions
     */
-   public void deleteFunction(JobFunctions jobFunctions){
+   public void deleteFunction(String jobFunctions){
       company.removeFunction(jobFunctions);
    }
 
    /**
     * updates a jobfunction
-    * @param jobFunctions
-    * @param name name as String
+    * @param newJobFunction new name as String
+    * @param oldJobFunction old name as String
     */
-   public void updateFunction(JobFunctions jobFunctions, String name){
-      jobFunctions.setName(name);
+   public void updateFunction(String oldJobFunction, String newJobFunction){
+      company.removeFunction(oldJobFunction);
+      company.addFunction(newJobFunction);
    }
 
    /**
@@ -93,18 +90,14 @@ public class StammdatenFacade {
     * @return all teams as a String Vector
     */
    public Vector<String> getAllTeams(){
-      Vector<String> allTeams = new Vector<>();
-      for (int i = 0; i < company.getTeams().size(); i++) {
-         allTeams.add(company.getTeam(i).getName());
-      }
-      return allTeams;
+      return company.getTeams().getDesignations();
    }
 
    /**
     * this method adds a team
     * @param team team
     */
-   public void addTeam(Team team){
+   public void addTeam(String team){
       company.addTeam(team);
    }
 
@@ -112,17 +105,18 @@ public class StammdatenFacade {
     * removes a team
     * @param team
     */
-   public void deleteTeam(Team team){
+   public void deleteTeam(String team){
       company.removeTeam(team);
    }
 
    /**
     * updates a team
-    * @param team
-    * @param name
+    * @param oldteam
+    * @param newTeam
     */
-   public void updateTeam(Team team, String name){
-      team.setName(name);
+   public void updateTeam(String oldteam, String newTeam){
+      company.removeTeam(oldteam);
+      company.addTeam(newTeam);
    }
 
    /**
@@ -140,5 +134,4 @@ public class StammdatenFacade {
    public void setFirmaName(String name){
       company.setName(name);
    }
-
 }

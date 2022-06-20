@@ -7,7 +7,7 @@ import javax.swing.*;
 /**
  * This class is an interface for all data that is needed for the GUI "Person erfassen"
  * @author Nadim Bhatti
- * @since 2022-06-19
+ * @since 2022-06-20
  * @version 1.0
  */
 public class PersonErfassenFacade {
@@ -24,6 +24,12 @@ public class PersonErfassenFacade {
     */
    public String getName(Person person){
       return person.getFristName() + " " + person.getLastName();
+   }
+
+   public void setName(Person person, String name){
+      String[] splitted = name.split(" ");
+      person.setFristName(splitted[0]);
+      person.setLastName(splitted[1]);
    }
 
    /**

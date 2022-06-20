@@ -4,6 +4,7 @@ import ch.bzz.M326.company.JobFunctions;
 import ch.bzz.M326.company.Team;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * a Participation in the company
@@ -15,8 +16,8 @@ import java.util.ArrayList;
  */
 public class Participation {
 
-    private ArrayList<JobFunctions> functions;
-    private ArrayList<Team> teams;
+    private JobFunctions functions;
+    private Team teams;
     private Person owner;
 
     /**
@@ -25,14 +26,16 @@ public class Participation {
      */
     public Participation(Person person){
         owner = person;
+        functions = new JobFunctions("Functions");
+        teams = new Team("Teams");
     }
 
     /**
      * add the jobFunction to the ArrayList
      * @param jobFunction
      */
-    public void addFunction(JobFunctions jobFunction){
-        functions.add(jobFunction);
+    public void addFunction(String jobFunction){
+        this.functions.addJobFunction(jobFunction);
     }
 
     /**
@@ -41,7 +44,7 @@ public class Participation {
      * @return name of function
      */
     public String getFunctionName(int index){
-        return functions.get(index).getName();
+        return functions.getJobFunction(index);
     }
 
     /**
@@ -49,7 +52,7 @@ public class Participation {
      * @param index
      */
     public void removeFunction(int index){
-        functions.remove(index);
+        functions.removeJobFunction(index);
     }
 
     /**
@@ -57,15 +60,15 @@ public class Participation {
      * @return number of function
      */
     public int getNumberOfFunctions(){
-        return functions.size();
+        return functions.getDesignations().size();
     }
 
     /**
      * add team to the ArrayList
      * @param team
      */
-    public void addTeam(Team team){
-        teams.add(team);
+    public void addTeam(String team){
+        teams.addTeam(team);
     }
 
     /**
@@ -74,7 +77,7 @@ public class Participation {
      * @return name of team
      */
     public String getTeamName(int index){
-        return teams.get(index).getName();
+        return teams.getTeam(index);
     }
 
     /**
@@ -82,7 +85,7 @@ public class Participation {
      * @param index
      */
     public void removeTeam(int index){
-        teams.remove(index);
+        teams.removeTeam(index);
     }
 
     /**
@@ -90,6 +93,6 @@ public class Participation {
      * @return number of teams
      */
     public int getNumberOfTeams(){
-        return teams.size();
+        return teams.getDesignations().size();
     }
 }

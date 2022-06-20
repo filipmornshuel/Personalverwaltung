@@ -50,11 +50,7 @@ public class UebersichtFacade {
     * @return all functions as a String Vector
     */
    public Vector<String> getAllJobFunctions(){
-      Vector<String> allJobFunctions = new Vector<>();
-      for (int i = 0; i < company.getJobFunctions().size(); i++) {
-         allJobFunctions.add(company.getJobFunction(i).getName());
-      }
-      return allJobFunctions;
+      return company.getJobFunctions().getDesignations();
    }
 
    /**
@@ -62,11 +58,7 @@ public class UebersichtFacade {
     * @return all teams as a String Vector
     */
    public Vector<String> getAllTeams(){
-      Vector<String> allTeams = new Vector<>();
-      for (int i = 0; i < company.getTeams().size(); i++) {
-         allTeams.add(company.getTeam(i).getName());
-      }
-      return allTeams;
+      return company.getTeams().getDesignations();
    }
 
    /**
