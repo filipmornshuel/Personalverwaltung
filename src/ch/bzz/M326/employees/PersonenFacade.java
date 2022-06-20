@@ -34,7 +34,7 @@ public class PersonenFacade {
     */
    public Vector<String> getMitarbeiterNameListe(){
       Vector<String> allPersons = new Vector<>();
-      for (int i = 0; i < company.getDepartments().size(); i++) {
+      for (int i = 0; i < company.getPeople().size(); i++) {
          allPersons.add(getMitarbeiterListe().get(i).getFristName() + " " + getMitarbeiterListe().get(i).getLastName());
       }
       return allPersons;

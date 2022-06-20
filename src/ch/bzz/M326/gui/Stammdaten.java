@@ -1,5 +1,8 @@
 package ch.bzz.M326.gui;
 
+import ch.bzz.M326.company.Company;
+import ch.bzz.M326.company.StammdatenFacade;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,17 +37,19 @@ public class Stammdaten extends JPanel {
     private ArrayList<String> texts;
     private JPanel abteilungsButton;
 
+    private Company company;
 
     /**
      * Konstruktor für das Erzeugen des Stammdaten-GUIs
      * @param pane Weitergabe vom JTabbedPane
      */
-    public Stammdaten(JTabbedPane pane){
+    public Stammdaten(JTabbedPane pane, Company company){
         this.pane = pane;
+        this.company = company;
         stammDatenPanel = new JPanel(new GridLayout(4,1, 50,20));
         springLayout = new SpringLayout();
         firma = new JLabel("Firma:");
-        firmaField = new JTextField("Text eingeben");
+        firmaField = new JTextField(company.getCompanyName());
         firmaPanel = new JPanel();
         firmaPanel.setLayout(springLayout);
 
@@ -77,15 +82,12 @@ public class Stammdaten extends JPanel {
      * @param name Weitergabe des Namen
      */
     public void createStammdatenComponent(String name){
+        StammdatenFacade facade = new StammdatenFacade(company);
 
         abteilungsPanel = new JPanel(new GridLayout(1,1, 0, 500));
         abteilungsPanelBorder = new JPanel(new BorderLayout());
-        texts = new ArrayList<>();
-        texts.add("text");
-        texts.add("text");
-        texts.add("text");
         abteilung = new JLabel(name+": ");
-        abteilungsListe = new JList(texts.toArray());
+        abteilungsListe = new JList(facade.getAllDepartments().toArray());
 
         abteilungAdden = new JButton("New");
         abteilungAdden.addActionListener(new ActionListener() {

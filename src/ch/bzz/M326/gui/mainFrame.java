@@ -28,8 +28,8 @@ public class mainFrame extends JFrame {
         pane = new JTabbedPane();
         getContentPane().add(pane);
         zuordnungTab = new Zuordnung(pane, company);
-        personenTab = new Personen(pane);
-        stammdatenTab = new Stammdaten(pane);
+        personenTab = new Personen(pane, company);
+        stammdatenTab = new Stammdaten(pane, company);
         logbuchTab = new Logbuch(pane);
     }
 }

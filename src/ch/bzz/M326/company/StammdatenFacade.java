@@ -12,7 +12,9 @@ public class StammdatenFacade {
 
    private Company company;
 
-   public StammdatenFacade(Company company){}
+   public StammdatenFacade(Company company){
+      this.company = company;
+   }
 
    /**
     * gets all departments

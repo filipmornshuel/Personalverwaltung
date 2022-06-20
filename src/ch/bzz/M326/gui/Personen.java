@@ -1,5 +1,8 @@
 package ch.bzz.M326.gui;
 
+import ch.bzz.M326.company.Company;
+import ch.bzz.M326.employees.PersonenFacade;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -45,12 +48,15 @@ public class Personen extends JPanel {
     private JCheckBox hrM;
     private JCheckBox adminstrator;
 
+    private Company company;
+
     /**
      * Konstruktor für das Ausführen der createPersonenComponents-Methode
      * @param pane Weitergabe des JTabbedPanes
      */
-    public Personen(JTabbedPane pane){
+    public Personen(JTabbedPane pane, Company company){
         this.pane = pane;
+        this.company = company;
         createPersonenComponents();
         pane.addTab("Personen", personenPanel);
     }
@@ -59,6 +65,8 @@ public class Personen extends JPanel {
      * Methode zum Initialisieren aller Attribute
      */
     public void createPersonenComponents(){
+
+        PersonenFacade facade = new PersonenFacade(company);
 
         personenPanel = new JPanel(new BorderLayout());
         personenListPanel = new JPanel(new BorderLayout());
@@ -83,13 +91,9 @@ public class Personen extends JPanel {
         personenListButtonsPanel = new JPanel(new GridLayout(1,3));
 
         //Betreffend Liste
-        personen = new ArrayList<>();
-        for (int i = 0; i < 30; i++){
-            personen.add("textjebigakock");
-        }
         personenPanel.setBorder(BorderFactory.createTitledBorder("Personen bearbeiten:"));
         personenListe = new JList<>();
-        personenListe = new JList(personen.toArray());
+        personenListe = new JList(facade.getMitarbeiterNameListe().toArray());
         übersicht = new JLabel("Übersicht");
         personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
         personenListPanel.add(personenScrollPane, BorderLayout.CENTER);
@@ -116,7 +120,7 @@ public class Personen extends JPanel {
         personenDetailPanel.setBorder(BorderFactory.createTitledBorder("Detail:"));
 
         name = new JLabel("Name: ");
-        field = new JTextField("Trulli Theo");
+        field = new JTextField(facade.getName(company.getPeople().get(0)));
         platzhalter = new JLabel();
         bild = new JLabel();
         imageIcon = new ImageIcon("src/pic.png");
