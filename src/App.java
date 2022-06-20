@@ -259,7 +259,7 @@ public class App {
 
    public Person randomPerson(){
       Random random = new Random();
-      String[] firstNames = {"Guenther", "Jonathan", "Markus", "Peder", "Choban", "Gohan", "Ertan", "Urs", "Michael", "Sebastian", "Sven"};
+      String[] firstNames = {"Guenther", "Jonathan", "Markus", "Peder", "Choban", "Gohan", "Erthan", "Urs", "Michael", "Sebastian", "Sven"};
       String[] lastNames = {"Ronaldinho", "Miroslav", "Van Guenther", "Schleichens", "Mueller", "Martins", "Frei", "Meier", "Dogan"};
       ImageIcon image = new ImageIcon("pic.png");
       int fn = random.nextInt(10);

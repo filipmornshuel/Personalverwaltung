@@ -30,6 +30,6 @@ public class mainFrame extends JFrame {
         zuordnungTab = new Zuordnung(pane, company);
         personenTab = new Personen(pane, company);
         stammdatenTab = new Stammdaten(pane, company);
-        logbuchTab = new Logbuch(pane);
+        logbuchTab = new Logbuch(pane, company);
     }
 }

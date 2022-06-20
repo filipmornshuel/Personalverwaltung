@@ -44,6 +44,7 @@ public class Stammdaten extends JPanel {
      * @param pane Weitergabe vom JTabbedPane
      */
     public Stammdaten(JTabbedPane pane, Company company){
+        StammdatenFacade facade = new StammdatenFacade(company);
         this.pane = pane;
         this.company = company;
         stammDatenPanel = new JPanel(new GridLayout(4,1, 50,20));
@@ -70,9 +71,9 @@ public class Stammdaten extends JPanel {
 
         pane.addTab("Stammdaten", stammDatenPanel);
         stammDatenPanel.add(firmaPanel);
-        createStammdatenComponent("Abteilungen");
-        createStammdatenComponent("Funktionen");
-        createStammdatenComponent("Teams");
+        createStammdatenComponent("Abteilungen", facade.getAllDepartments().toArray());
+        createStammdatenComponent("Funktionen", facade.getAllJobFunctions().toArray());
+        createStammdatenComponent("Teams", facade.getAllTeams().toArray());
 
     }
 
@@ -81,13 +82,12 @@ public class Stammdaten extends JPanel {
      * in Methode ausgebaut, um redundanten Code zu vermeiden
      * @param name Weitergabe des Namen
      */
-    public void createStammdatenComponent(String name){
-        StammdatenFacade facade = new StammdatenFacade(company);
+    public void createStammdatenComponent(String name, Object[] listElements){
 
         abteilungsPanel = new JPanel(new GridLayout(1,1, 0, 500));
         abteilungsPanelBorder = new JPanel(new BorderLayout());
         abteilung = new JLabel(name+": ");
-        abteilungsListe = new JList(facade.getAllDepartments().toArray());
+        abteilungsListe = new JList(listElements);
 
         abteilungAdden = new JButton("New");
         abteilungAdden.addActionListener(new ActionListener() {

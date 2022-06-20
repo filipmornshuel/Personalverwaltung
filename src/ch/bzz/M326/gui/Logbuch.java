@@ -1,5 +1,7 @@
 package ch.bzz.M326.gui;
 
+import ch.bzz.M326.company.Company;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,12 +17,15 @@ public class Logbuch extends JPanel{
     private JScrollPane logScrollPane;
     private JTextArea logArea;
 
+    private Company company;
     /**
      * Konstruktor für LogBuch
      * @param pane Weitergabe des JTabbedPanes
      */
-    public Logbuch(JTabbedPane pane){
+    public Logbuch(JTabbedPane pane, Company company){
         this.pane = pane;
+        this.company = company;
+
         logPanel = new JPanel(new BorderLayout());
         logArea = new JTextArea();
         logArea.setEditable(true);

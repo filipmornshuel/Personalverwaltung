@@ -1,6 +1,7 @@
 package ch.bzz.M326.gui;
 
 import ch.bzz.M326.company.Company;
+import ch.bzz.M326.employees.PersonErfassenFacade;
 import ch.bzz.M326.employees.PersonenFacade;
 
 import javax.swing.*;
@@ -106,7 +107,7 @@ public class Personen extends JPanel {
         create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreatePersonDialog("Person erfassen");
+                new CreatePersonDialog("Person erfassen", company);
             }
         });
 
@@ -193,18 +194,22 @@ class CreatePersonDialog extends JDialog{
     private JDialog dialog;
     private JButton speichernButton, abortBtn;
 
+    private Company company;
+
     /**
      * Konstruktor für das Erzeugen der Komponenten
      * @param text Weitergabe des Namens
      */
-    CreatePersonDialog(String text){
+    CreatePersonDialog(String text, Company company){
+        PersonErfassenFacade facade = new PersonErfassenFacade(company);
+        this.company = company;
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
         this.setTitle(text + " erfassen");
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         name = new JLabel("Name: ");
-        field = new JTextField("Trulli Theo");
+        field = new JTextField(facade.getName(company.getPeople().get(0)));
         foto = new JLabel("Foto: ");
         imageIcon = new ImageIcon("src/pic.png");
         bild = new JLabel(imageIcon);
