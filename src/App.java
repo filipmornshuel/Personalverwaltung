@@ -235,6 +235,24 @@ public class App {
 
       mainFrame mainFrame = new mainFrame(company);
 
+      System.out.println(person1.getFristName());
+      System.out.println(person2.getFristName());
+      System.out.println(person3.getFristName());
+      System.out.println(person4.getFristName());
+      System.out.println(person5.getFristName());
+      System.out.println(person6.getFristName());
+      System.out.println(person7.getFristName());
+      System.out.println(person8.getFristName());
+      System.out.println(person9.getFristName());
+      System.out.println(person10.getFristName());
+      System.out.println(person11.getFristName());
+      System.out.println(person12.getFristName());
+      System.out.println(person13.getFristName());
+      System.out.println(person14.getFristName());
+      System.out.println(person15.getFristName());
+      System.out.println(person16.getFristName());
+
+
 
 
    }

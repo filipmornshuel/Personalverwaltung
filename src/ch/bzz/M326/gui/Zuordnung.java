@@ -101,7 +101,7 @@ public class Zuordnung extends JPanel {
         personenDetailPanel.setBorder(BorderFactory.createTitledBorder("Detail:"));
 
         name = new JLabel("Name: ");
-        field = new JTextField("Trulli Theo");
+        field = new JTextField(zuordnungFacade.getName(company.getPeople().get(0)));
         platzhalter = new JLabel();
         bild = new JLabel();
         imageIcon = new ImageIcon("src/pic.png");
@@ -116,8 +116,8 @@ public class Zuordnung extends JPanel {
         teamsListe=new ArrayList<>();
         teamsListe.add("Team wählen");
 
-        funktionenBox = new JComboBox(funktionenListe.toArray());
-        teamsBox = new JComboBox(teamsListe.toArray());
+        funktionenBox = new JComboBox(zuordnungFacade.getAllJobFunctions().toArray());
+        teamsBox = new JComboBox(zuordnungFacade.getAllTeams().toArray());
 
 
 
