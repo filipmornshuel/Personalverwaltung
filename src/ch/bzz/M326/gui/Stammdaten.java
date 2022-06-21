@@ -32,6 +32,8 @@ public class Stammdaten extends JPanel {
     private JPanel abteilungsPanelBorder;
     private JLabel abteilung;
     private JList<String> abteilungsListe;
+    private JList<String> funktionsListe;
+    private JList<String> teamsListe;
     private JButton abteilungAdden;
     private JButton abteilungBearbeiten;
     private JButton abteilungLöschen;
@@ -82,9 +84,9 @@ public class Stammdaten extends JPanel {
         pane.addTab("Stammdaten", stammDatenPanel);
         stammDatenPanel.add(firmaPanel);
 
-        createStammdatenComponent("Abteilungen", facade.getAllDepartments().toArray());
-        createStammdatenComponent("Funktionen", facade.getAllJobFunctions().toArray());
-        createStammdatenComponent("Teams", facade.getAllTeams().toArray());
+        createStammdatenComponent("Abteilungen", facade.getAllDepartments().toArray(),1);
+        createStammdatenComponent("Funktionen", facade.getAllJobFunctions().toArray(),2);
+        createStammdatenComponent("Teams", facade.getAllTeams().toArray(),3);
 
     }
 
@@ -94,7 +96,7 @@ public class Stammdaten extends JPanel {
      * @param name to set the name
      * @param listElements to set the ListElements
      */
-    public void createStammdatenComponent(String name, Object[] listElements){
+    public void createStammdatenComponent(String name, Object[] listElements, int value){
         //Facade
         StammdatenFacade facade = new StammdatenFacade(company);
 
@@ -104,13 +106,31 @@ public class Stammdaten extends JPanel {
 
 
         abteilung = new JLabel(name+": ");
-        abteilungsListe = new JList(listElements);
+
+        switch (value){
+            case 1:
+                abteilungsListe = new JList(listElements);
+                abteilungScrollPane = new JScrollPane(abteilungsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                break;
+            case 2:
+                funktionsListe = new JList(listElements);
+                abteilungScrollPane = new JScrollPane(funktionsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                break;
+            case 3:
+                teamsListe = new JList(listElements);
+                abteilungScrollPane = new JScrollPane(teamsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                break;
+            default:
+
+                break;
+        }
+
 
         abteilungAdden = new JButton("New");
         abteilungAdden.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("morn");
+                //System.out.println("morn");
                 CreateDialog createDialog = new CreateDialog(name, company);
 
             }
@@ -119,6 +139,23 @@ public class Stammdaten extends JPanel {
         abteilungLöschen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                switch (value){
+                    case 1:
+                        facade.universalDelete(name, abteilungsListe.getSelectedValue());
+                        System.out.println(abteilungsListe.getSelectedValue());
+                        System.out.println(facade.universalGetList(name));
+                        break;
+                    case 2:
+                        facade.universalDelete(name, funktionsListe.getSelectedValue());
+                        System.out.println(funktionsListe.getSelectedValue());
+                        System.out.println(facade.universalGetList(name));
+                        break;
+                    case 3:
+                        facade.universalDelete(name, teamsListe.getSelectedValue());
+                        System.out.println(teamsListe.getSelectedValue());
+                        System.out.println(facade.universalGetList(name));
+                        break;
+                }
 
             }
         });
@@ -127,12 +164,15 @@ public class Stammdaten extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("morn");
-                UpdateDialog updateDialog = new UpdateDialog("Abteilung", company);
+
+                new UpdateDialog(name, company,value, getJlist(value));
+
 
             }
         });
 
-        abteilungScrollPane = new JScrollPane(abteilungsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        //abteilungScrollPane = new JScrollPane(abteilungsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 
         abteilungsButton.add(abteilungAdden);
@@ -144,6 +184,20 @@ public class Stammdaten extends JPanel {
         abteilungsPanelBorder.add(abteilungsButton, BorderLayout.SOUTH);
 
         stammDatenPanel.add(abteilungsPanel);
+    }
+
+    public JList getJlist(int value){
+        switch (value){
+            case 1:
+                return abteilungsListe;
+            case 2:
+                return funktionsListe;
+            case 3:
+                return teamsListe;
+            default:
+                return null;
+
+        }
     }
 
 }
@@ -185,7 +239,8 @@ class CreateDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 temp = eingabeFeld.getText();
-
+                facade.universalAdd(text, temp);
+                System.out.println(facade.universalGetList(text));
                 dialog.dispose();
             }
         });
@@ -224,7 +279,7 @@ class UpdateDialog extends JDialog{
      * @param text to set the name
      * @param company to set the company
      */
-    UpdateDialog(String text, Company company){
+    UpdateDialog(String text, Company company, int value, JList jList){
         //Facade
         StammdatenFacade facade = new StammdatenFacade(company);
 
@@ -242,6 +297,8 @@ class UpdateDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 temp = eingabeFeld.getText();
+                facade.universalUpdate(text, facade.universalGetList(text).get(jList.getSelectedIndex()),temp );
+                System.out.println(facade.universalGetList(text));
 
                 dialog.dispose();
             }
