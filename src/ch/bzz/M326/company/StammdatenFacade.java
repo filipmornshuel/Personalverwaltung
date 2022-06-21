@@ -37,11 +37,102 @@ public class StammdatenFacade {
    }
 
    /**
+    * adds either a department, function or a team by the name
+    * @param name
+    * @param typedText
+    */
+   public void universalAdd(String name, String typedText){
+      switch (name){
+         case "Abteilungen":
+            addDepartment(new Department(typedText));
+            break;
+         case "Funktionen":
+            addJobFunction(typedText);
+            break;
+         case "Teams":
+            addTeam(typedText);
+      }
+   }
+
+   public void universalDelete(String name, String delete){
+      switch (name){
+         case "Abteilungen":
+            deleteDepartment(delete);
+            break;
+         case "Funktionen":
+            deleteFunction(delete);
+            break;
+         case "Teams":
+            deleteTeam(delete);
+      }
+   }
+
+   /**
+    * gets size of name
+    * @param name
+    * @return
+    */
+   public int universalGetSize(String name){
+      switch (name){
+         case "Abteilungen":
+            return getAllDepartments().size();
+         case "Funktionen":
+            return getAllJobFunctions().size();
+         case "Teams":
+            return getAllTeams().size();
+         default:
+            return 0;
+      }
+   }
+
+   /**
+    * gets list by name
+    * @param name
+    * @return
+    */
+   public Vector<String> universalGetList(String name){
+      switch (name){
+         case "Abteilungen":
+            return getAllDepartments();
+         case "Funktionen":
+            return getAllJobFunctions();
+         case "Teams":
+            return getAllTeams();
+         default:
+            return null;
+      }
+   }
+
+   /**
+    * updates element by name
+    * @param name
+    * @return
+    */
+   public void universalUpdate(String name, String oldDesignation, String newDesignation){
+      switch (name){
+         case "Abteilungen":
+            updateDepartment(new Department(oldDesignation), newDesignation);
+            break;
+         case "Funktionen":
+            updateFunction(oldDesignation, newDesignation);
+            break;
+         case "Teams":
+            updateTeam(oldDesignation, newDesignation);
+            break;
+      }
+   }
+
+
+   /**
     * removes a department
     * @param department
     */
-   public void deleteDepartment(Department department){
-      company.removeDepartment(department);
+   public void deleteDepartment(String department){
+      for (int i = 0; i < company.getDepartments().size(); i++) {
+         if(company.getDepartments(i).getName().equals(department)){
+            company.removeDepartment(company.getDepartments(i));
+         }
+      }
    }
 
    /**

@@ -38,6 +38,7 @@ public class Stammdaten extends JPanel {
     private JPanel abteilungsButton;
 
     private Company company;
+    private StammdatenFacade facade;
 
     /**
      * Konstruktor für das Erzeugen des Stammdaten-GUIs
@@ -45,6 +46,7 @@ public class Stammdaten extends JPanel {
      */
     public Stammdaten(JTabbedPane pane, Company company){
         StammdatenFacade facade = new StammdatenFacade(company);
+        this.facade = facade;
         this.pane = pane;
         this.company = company;
         stammDatenPanel = new JPanel(new GridLayout(4,1, 50,20));
@@ -68,7 +70,6 @@ public class Stammdaten extends JPanel {
         firmaPanel.add(new JLabel());
         firmaPanel.add(new JLabel());
 
-
         pane.addTab("Stammdaten", stammDatenPanel);
         stammDatenPanel.add(firmaPanel);
         createStammdatenComponent("Abteilungen", facade.getAllDepartments().toArray());
@@ -87,21 +88,23 @@ public class Stammdaten extends JPanel {
         abteilungsPanel = new JPanel(new GridLayout(1,1, 0, 500));
         abteilungsPanelBorder = new JPanel(new BorderLayout());
         abteilung = new JLabel(name+": ");
-        abteilungsListe = new JList(listElements);
+
+        DefaultListModel<String> model = new DefaultListModel<String>();
+        for (int i = 0; i < facade.universalGetSize(name); i++) {
+            model.addElement(facade.universalGetList(name).get(i));
+        }
+        abteilungsListe = new JList<String>(model);
 
         abteilungAdden = new JButton("New");
         abteilungAdden.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("morn");
-                new CreateDialog(name);
-                // texts.add("jebiga");
-                // System.out.println(texts);
-                //abteilungsListe.add(texts.toArray())
-                //abteilungsListe.repaint();
+                new CreateDialog(name, company, model);
             }
         });
         abteilungLöschen = new JButton("Delete");
+
         abteilungsListe.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -113,10 +116,18 @@ public class Stammdaten extends JPanel {
                 abteilungLöschen.setEnabled(false);
             }
         });
+
         abteilungLöschen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //model.removeElement(abteilungsListe.getSelectedValue());
+                //System.out.println(model);
+                try {
+                    facade.universalDelete(name, abteilungsListe.getSelectedValue());
+                    model.remove(abteilungsListe.getSelectedIndex());
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         abteilungBearbeiten = new JButton("Edit");
@@ -124,7 +135,7 @@ public class Stammdaten extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("morn");
-                new UpdateDialog("Abteilung");
+                new UpdateDialog(name, company, model, abteilungsListe);
             }
         });
         abteilungsButton = new JPanel(new GridLayout(1,3,5,5));
@@ -137,14 +148,7 @@ public class Stammdaten extends JPanel {
         abteilungsPanelBorder.add(abteilungScrollPane, BorderLayout.CENTER);
         abteilungsPanelBorder.add(abteilungsButton, BorderLayout.SOUTH);
 
-
-
-
         stammDatenPanel.add(abteilungsPanel);
-
-
-
-
     }
 }
 
@@ -160,12 +164,15 @@ class CreateDialog extends JDialog{
     private JButton speichernButton, abortBtn;
     private JDialog dialog;
     private String temp;
+    private Company company;
 
     /**
      * Konstruktor für das Erzeugen vom JDialog
      * @param text Weitergabe des Namens
      */
-    CreateDialog(String text){
+    CreateDialog(String text, Company company, DefaultListModel model){
+        this.company = company;
+        StammdatenFacade facade = new StammdatenFacade(company);
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
         this.setTitle(text + " erfassen");
@@ -180,7 +187,8 @@ class CreateDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 temp = eingabeFeld.getText();
-
+                facade.universalAdd(text, temp);
+                model.addElement(temp);
                 dialog.dispose();
             }
         });
@@ -211,12 +219,15 @@ class UpdateDialog extends JDialog{
     private JButton speichernButton, abortBtn;
     private JDialog dialog;
     private String temp;
+    private Company company;
 
     /**
      * Konstruktor zum erzeugen des JDialoges
      * @param text Weitergabe des Namens
      */
-    UpdateDialog(String text){
+    UpdateDialog(String text, Company company, DefaultListModel model, JList list){
+        this.company = company;
+        StammdatenFacade facade = new StammdatenFacade(company);
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
         this.setTitle(text+" bearbeiten");
@@ -230,7 +241,8 @@ class UpdateDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 temp = eingabeFeld.getText();
-
+                facade.universalUpdate(text, list.getSelectedValue().toString(), eingabeFeld.getText());
+                model.set(list.getSelectedIndex(), eingabeFeld.getText());
                 dialog.dispose();
             }
         });
