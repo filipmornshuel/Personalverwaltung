@@ -47,6 +47,24 @@ public class HRPerson extends Person {
     }
 
     /**
+     * gets first name of hrperson
+     * @return
+     */
+    @Override
+    public String getFristName() {
+        return super.getFristName();
+    }
+
+    /**
+     * gets last name of hrperson
+     * @return
+     */
+    @Override
+    public String getLastName() {
+        return super.getLastName();
+    }
+
+    /**
      * set the modus of the HRPerson
      * @param modus
      */
