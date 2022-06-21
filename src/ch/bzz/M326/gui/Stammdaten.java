@@ -1,6 +1,7 @@
 package ch.bzz.M326.gui;
 
 import ch.bzz.M326.company.Company;
+import ch.bzz.M326.company.Department;
 import ch.bzz.M326.company.StammdatenFacade;
 
 import javax.swing.*;
@@ -10,14 +11,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
- * Unsere Stammdaten-GUI für das Programm
+ * Our StammDaten-GUI
  */
 public class Stammdaten extends JPanel {
 
     /**
-     * Komponenten für das StammdatenPanel
+     * Components for the StammdatenPanel
      */
     private JTabbedPane pane;
     private JPanel stammDatenPanel;
@@ -40,20 +42,28 @@ public class Stammdaten extends JPanel {
     private Company company;
 
     /**
-     * Konstruktor für das Erzeugen des Stammdaten-GUIs
-     * @param pane Weitergabe vom JTabbedPane
+     * Constructor for initialize firma-components and calling up the initializePanels and createStammDatenComponents method
+     * @param pane to set the JTabbedPane
+     * @param company to set the company
      */
     public Stammdaten(JTabbedPane pane, Company company){
+
+        //Facade
         StammdatenFacade facade = new StammdatenFacade(company);
         this.pane = pane;
         this.company = company;
+
+        //Needed for the firmaPanel --> usually in the initializePanels method
         stammDatenPanel = new JPanel(new GridLayout(4,1, 50,20));
+
+        //SpringLayout
         springLayout = new SpringLayout();
         firma = new JLabel("Firma:");
         firmaField = new JTextField(company.getCompanyName());
         firmaPanel = new JPanel();
         firmaPanel.setLayout(springLayout);
 
+        //Setting with springLayout the JLabel and JField in relation to firmaPanel
         springLayout.putConstraint(SpringLayout.WEST, firma,5, SpringLayout.WEST, firmaPanel);
         springLayout.putConstraint(SpringLayout.NORTH, firma,50, SpringLayout.NORTH, firmaPanel);
         springLayout.putConstraint(SpringLayout.WEST, firmaField, 250, SpringLayout.EAST, firma);
@@ -71,21 +81,28 @@ public class Stammdaten extends JPanel {
 
         pane.addTab("Stammdaten", stammDatenPanel);
         stammDatenPanel.add(firmaPanel);
+
         createStammdatenComponent("Abteilungen", facade.getAllDepartments().toArray());
         createStammdatenComponent("Funktionen", facade.getAllJobFunctions().toArray());
         createStammdatenComponent("Teams", facade.getAllTeams().toArray());
 
     }
 
+
     /**
-     * Initialisierung der Komponenten
-     * in Methode ausgebaut, um redundanten Code zu vermeiden
-     * @param name Weitergabe des Namen
+     * Initialize all components and adding to the panels
+     * @param name to set the name
+     * @param listElements to set the ListElements
      */
     public void createStammdatenComponent(String name, Object[] listElements){
+        //Facade
+        StammdatenFacade facade = new StammdatenFacade(company);
 
-        abteilungsPanel = new JPanel(new GridLayout(1,1, 0, 500));
+        abteilungsButton = new JPanel(new GridLayout(1,3,5,5));
         abteilungsPanelBorder = new JPanel(new BorderLayout());
+        abteilungsPanel = new JPanel(new GridLayout(1,1, 0, 500));
+
+
         abteilung = new JLabel(name+": ");
         abteilungsListe = new JList(listElements);
 
@@ -94,25 +111,11 @@ public class Stammdaten extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("morn");
-                new CreateDialog(name);
-                // texts.add("jebiga");
-                // System.out.println(texts);
-                //abteilungsListe.add(texts.toArray())
-                //abteilungsListe.repaint();
+                CreateDialog createDialog = new CreateDialog(name, company);
+
             }
         });
         abteilungLöschen = new JButton("Delete");
-        abteilungsListe.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                abteilungLöschen.setEnabled(true);
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                abteilungLöschen.setEnabled(false);
-            }
-        });
         abteilungLöschen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,11 +127,14 @@ public class Stammdaten extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("morn");
-                new UpdateDialog("Abteilung");
+                UpdateDialog updateDialog = new UpdateDialog("Abteilung", company);
+
             }
         });
-        abteilungsButton = new JPanel(new GridLayout(1,3,5,5));
+
         abteilungScrollPane = new JScrollPane(abteilungsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+
         abteilungsButton.add(abteilungAdden);
         abteilungsButton.add(abteilungLöschen);
         abteilungsButton.add(abteilungBearbeiten);
@@ -137,24 +143,18 @@ public class Stammdaten extends JPanel {
         abteilungsPanelBorder.add(abteilungScrollPane, BorderLayout.CENTER);
         abteilungsPanelBorder.add(abteilungsButton, BorderLayout.SOUTH);
 
-
-
-
         stammDatenPanel.add(abteilungsPanel);
-
-
-
-
     }
+
 }
 
 /**
- * Innere Klasse für das Erzeugen
+ * Inner class to create new StammDaten
  */
 class CreateDialog extends JDialog{
 
     /**
-     * Komponenten für das JDialog
+     * Components for the JDialog
      */
     private JTextField eingabeFeld;
     private JButton speichernButton, abortBtn;
@@ -162,19 +162,24 @@ class CreateDialog extends JDialog{
     private String temp;
 
     /**
-     * Konstruktor für das Erzeugen vom JDialog
-     * @param text Weitergabe des Namens
+     * Constructor for intialize the components and adding to the panels for the JDialog
+     * @param text to set the name
+     * @param company to set the company
      */
-    CreateDialog(String text){
+    CreateDialog(String text, Company company){
+        //Facade
+        StammdatenFacade facade = new StammdatenFacade(company);
+
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
         this.setTitle(text + " erfassen");
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.getContentPane().add(new JLabel(text+": "));
+
         eingabeFeld = new JTextField();
         eingabeFeld.setText("Text eingeben");
-       this.getContentPane().add(eingabeFeld);
-        //Ok Listener, Verarbeitung des Buttons
+        this.getContentPane().add(eingabeFeld);
+
         speichernButton = new JButton("Speichern");
         speichernButton.addActionListener(new ActionListener(){
             @Override
@@ -198,30 +203,37 @@ class CreateDialog extends JDialog{
         pack();
         setVisible(true);
     }
+
 }
 
 /**
- * Innere Klasse für das Updaten
+ * Inner class to update StammDaten
  */
 class UpdateDialog extends JDialog{
     /**
-     * Komponenten für das JDialog
+     * Components for the JDialog
      */
     private JTextField eingabeFeld;
     private JButton speichernButton, abortBtn;
     private JDialog dialog;
     private String temp;
 
+
     /**
-     * Konstruktor zum erzeugen des JDialoges
-     * @param text Weitergabe des Namens
+     * Constructor for intialize the components and adding to the panels for the JDialog
+     * @param text to set the name
+     * @param company to set the company
      */
-    UpdateDialog(String text){
+    UpdateDialog(String text, Company company){
+        //Facade
+        StammdatenFacade facade = new StammdatenFacade(company);
+
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
         this.setTitle(text+" bearbeiten");
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.getContentPane().add(new JLabel(text+": "));
+
         eingabeFeld = new JTextField();
         eingabeFeld.setText("Text eingeben");
         this.getContentPane().add(eingabeFeld);
@@ -234,7 +246,7 @@ class UpdateDialog extends JDialog{
                 dialog.dispose();
             }
         });
-        //Abbrechen Button mit Actionlistener
+
         abortBtn = new JButton("Abbrechen");
         abortBtn.addActionListener(new ActionListener(){
             @Override
@@ -250,4 +262,5 @@ class UpdateDialog extends JDialog{
         pack();
         setVisible(true);
     }
+
 }

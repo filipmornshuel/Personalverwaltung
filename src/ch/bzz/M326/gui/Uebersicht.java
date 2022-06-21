@@ -7,12 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * Our Zuordnung-GUI
- */
-public class Zuordnung extends JPanel {
+public class Uebersicht extends JPanel {
     /**
-     * Components for the gui
+     * Komponenten für das Erzeugen des GUIs
      */
     private JTabbedPane pane;
     private JLabel übersicht;
@@ -29,6 +26,8 @@ public class Zuordnung extends JPanel {
     private SpringLayout springLayout;
     private JScrollPane personenScrollPane;
     private GridBagConstraints gridBagConstraints;
+    private JPanel personenSearchPanel;
+    private JTextField searchField;
 
     private JLabel name;
     private JTextField field;
@@ -48,24 +47,29 @@ public class Zuordnung extends JPanel {
     private Company company;
 
     /**
-     * Constructor for calling up the initalizePanels and createZurodnungComponents methods
-     * @param pane to set the JTabbedPane
-     * @param company to set the company
+     * Konstruktor für das Aufrufen der createZurodnungComponents-Methode
+     * @param pane Weitergabe des JTabbedPanes
      */
-    public Zuordnung(JTabbedPane pane, Company company){
+    public Uebersicht(JTabbedPane pane, Company company){
         this.pane = pane;
         this.company = company;
-        initializePanels();
-        createZuordnungComponents();
-        pane.addTab("Zuordnung", personenPanel);
+        createÜbersichtComponents();
+        pane.addTab("Übersicht", personenPanel);
+
     }
 
     /**
-     * Method to initialize the panels
+     * Methode zum Initialisieren der Attribute
      */
-    public void initializePanels(){
+    public void createÜbersichtComponents(){
+
+        ZuordnungFacade zuordnungFacade = new ZuordnungFacade(company);
+
         personenPanel = new JPanel(new BorderLayout());
         personenListPanel = new JPanel(new BorderLayout());
+        personenSearchPanel = new JPanel(new GridLayout(1,1));
+        searchField = new JTextField("Person suchen");
+        personenSearchPanel.add(searchField);
 
         personenDetailPanel = new JPanel(new BorderLayout());
         personenDetailBildMainPanel = new JPanel(new BorderLayout());
@@ -74,6 +78,7 @@ public class Zuordnung extends JPanel {
         springLayout = new SpringLayout();
         personenDetailBildPanel.setLayout(springLayout);
 
+
         personenDetailRollenPanel = new JPanel();
         personenDetailRollenPanel.setLayout(new GridBagLayout());
         gridBagConstraints = new GridBagConstraints();
@@ -81,21 +86,21 @@ public class Zuordnung extends JPanel {
         personenDetailBildNebenPanel = new JPanel();
         personenDetailBildNebenPanel.setLayout(new BoxLayout(personenDetailBildNebenPanel, BoxLayout.PAGE_AXIS));
 
-    }
+        personenListPanel.add(personenSearchPanel, BorderLayout.SOUTH);
 
-    /**
-     * Method to initialize all components and adding to the panels
-     */
-    public void createZuordnungComponents(){
 
-        //Facade
-        ZuordnungFacade zuordnungFacade = new ZuordnungFacade(company);
-
-        //Components
+        //Betreffend Liste
+        personenPanel.setBorder(BorderFactory.createTitledBorder("Personen bearbeiten:"));
         personenListe = new JList<>();
         personenListe = new JList(zuordnungFacade.getMitarbeiterNameListe().toArray());
         übersicht = new JLabel("Übersicht");
         personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
+        personenListPanel.add(personenScrollPane, BorderLayout.CENTER);
+        personenListPanel.add(übersicht, BorderLayout.NORTH);
+
+
+        //DetailPanel betreffend
+        personenDetailPanel.setBorder(BorderFactory.createTitledBorder("Detail:"));
 
         name = new JLabel("Name: ");
         field = new JTextField(zuordnungFacade.getName(company.getPeople().get(0)));
@@ -107,7 +112,7 @@ public class Zuordnung extends JPanel {
         abteilung = new JLabel("Abteilung: ");
         funktion = new JLabel("Funktion: ");
         teams = new JLabel("Teams: ");
-        abteilungsField = new JTextField("Finance");
+        abteilungsField = new JTextField("Finance                     ");
         funktionenListe = new ArrayList<>();
         funktionenListe.add("Funktion wählen");
         teamsListe=new ArrayList<>();
@@ -116,17 +121,10 @@ public class Zuordnung extends JPanel {
         funktionenBox = new JComboBox(zuordnungFacade.getAllJobFunctions().toArray());
         teamsBox = new JComboBox(zuordnungFacade.getAllTeams().toArray());
 
-        //List
-        personenPanel.setBorder(BorderFactory.createTitledBorder("Personen bearbeiten:"));
-
-        personenListPanel.add(personenScrollPane, BorderLayout.CENTER);
-        personenListPanel.add(übersicht, BorderLayout.NORTH);
 
 
-        //DetailPanel
-        personenDetailPanel.setBorder(BorderFactory.createTitledBorder("Detail:"));
 
-
+        //personenDetailBildPanel.add(name);
         springLayout.putConstraint(SpringLayout.EAST, field, -90, SpringLayout.EAST, personenDetailBildPanel);
         springLayout.putConstraint(SpringLayout.NORTH, field, 0, SpringLayout.NORTH, personenDetailBildPanel);
         field.setColumns(20);
@@ -172,7 +170,7 @@ public class Zuordnung extends JPanel {
         personenDetailPanel.add(personenDetailRollenPanel, BorderLayout.SOUTH);
 
 
-        //ListPanel and DetailPanel
+        //ListPanel und DetailPanel zusammensetzen
         personenPanel.add(personenListPanel, BorderLayout.WEST);
         personenPanel.add(personenDetailPanel, BorderLayout.CENTER);
 

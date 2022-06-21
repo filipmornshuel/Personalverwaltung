@@ -5,20 +5,21 @@ import ch.bzz.M326.company.Company;
 import javax.swing.*;
 
 /**
- * Das MainFrame, indem alle Panes zueinanderfinden
+ * The MainFrame all panes find here the path
  */
 public class mainFrame extends JFrame {
     /**
-     * Komponenten für das MainFrame
+     * Components for the MainFrame
      */
     private JTabbedPane pane;
     private Logbuch logbuchTab;
     private Stammdaten stammdatenTab;
     private Personen personenTab;
     private Zuordnung zuordnungTab;
+    private Uebersicht uebersichtTab;
 
     /**
-     * Konstruktor für das MainFrame
+     * Constructor for the MainFrame
      */
     public mainFrame(Company company){
         setVisible(true);
@@ -27,6 +28,7 @@ public class mainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pane = new JTabbedPane();
         getContentPane().add(pane);
+        uebersichtTab = new Uebersicht(pane, company);
         zuordnungTab = new Zuordnung(pane, company);
         personenTab = new Personen(pane, company);
         stammdatenTab = new Stammdaten(pane, company);

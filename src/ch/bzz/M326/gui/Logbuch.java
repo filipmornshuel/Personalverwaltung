@@ -6,11 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Unser Logbuch-GUI für das Programm
+ * Our Logbuch-GUI
  */
 public class Logbuch extends JPanel{
     /**
-     * Komponenten für das logPanel
+     * Components für for the LogPanel
      */
     private JTabbedPane pane;
     private JPanel logPanel;
@@ -19,8 +19,9 @@ public class Logbuch extends JPanel{
 
     private Company company;
     /**
-     * Konstruktor für LogBuch
-     * @param pane Weitergabe des JTabbedPanes
+     * Constructor for the LogBuch
+     * @param pane to set the JTabbedPane
+     * @param company to set the company
      */
     public Logbuch(JTabbedPane pane, Company company){
         this.pane = pane;
