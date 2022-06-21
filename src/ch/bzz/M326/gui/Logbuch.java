@@ -32,8 +32,8 @@ public class Logbuch extends JPanel{
         logArea.setEditable(true);
         logScrollPane = new JScrollPane(logArea,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
         logPanel.add(logScrollPane, BorderLayout.CENTER);
-        for (int i = 0; i < 50; i++) {
-            logArea.setText(logArea.getText() + "ltrbguosrutnb\n");
+        for (int i = 0; i < company.getLogBook().getSize(); i++) {
+            logArea.setText(logArea.getText() + company.getLogBook().getEntry(i) + "\n");
         }
         pane.addTab("Logbuch",logPanel);
     }

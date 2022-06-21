@@ -5,7 +5,10 @@ import ch.bzz.M326.company.Team;
 import ch.bzz.M326.employees.HRPerson;
 import ch.bzz.M326.employees.Participation;
 import ch.bzz.M326.employees.Person;
+import ch.bzz.M326.gui.Logbuch;
 import ch.bzz.M326.gui.mainFrame;
+import ch.bzz.M326.log.LogBook;
+import ch.bzz.M326.log.Useraction;
 
 import javax.swing.*;
 import java.util.Random;
@@ -230,7 +233,44 @@ public class App {
 
 
       HRPerson hrPerson = new HRPerson("Chasper", "Siegenthaler", new ImageIcon("pic.png"), 1);
+      LogBook logBook = new LogBook();
+      Useraction u1 = new Useraction(hrPerson, person1, 0);
+      System.out.println(u1.getEntry());
+      Useraction u2 = new Useraction(hrPerson, person8, 1);
+      Useraction u3 = new Useraction(hrPerson, person3, 2);
+      Useraction u4 = new Useraction(hrPerson, person10, 3);
+      Useraction u5 = new Useraction(hrPerson, person16, 0);
+      Useraction u6 = new Useraction(hrPerson, person12, 2);
+      Useraction u7 = new Useraction(hrPerson, person10, 2);
+      Useraction u8 = new Useraction(hrPerson, person5, 1);
+      Useraction u9 = new Useraction(hrPerson, person6, 0);
+      Useraction u10 = new Useraction(hrPerson, person9, 0);
+      Useraction u11 = new Useraction(hrPerson, person9, 2);
+      Useraction u12 = new Useraction(hrPerson, person14, 3);
+      Useraction u13 = new Useraction(hrPerson, person3, 0);
+      Useraction u14 = new Useraction(hrPerson, person2, 2);
+      Useraction u15 = new Useraction(hrPerson, person7, 1);
 
+
+      logBook.addEntryToList(u1.getEntry());
+      logBook.addEntryToList(u2.getEntry());
+      logBook.addEntryToList(u3.getEntry());
+      logBook.addEntryToList(u4.getEntry());
+      logBook.addEntryToList(u5.getEntry());
+      logBook.addEntryToList(u6.getEntry());
+      logBook.addEntryToList(u7.getEntry());
+      logBook.addEntryToList(u8.getEntry());
+      logBook.addEntryToList(u9.getEntry());
+      logBook.addEntryToList(u10.getEntry());
+      logBook.addEntryToList(u11.getEntry());
+      logBook.addEntryToList(u12.getEntry());
+      logBook.addEntryToList(u13.getEntry());
+      logBook.addEntryToList(u14.getEntry());
+      logBook.addEntryToList(u15.getEntry());
+
+      logBook.printLog();
+
+      company.setLogBook(logBook);
       company.addHRPerson(hrPerson);
 
       mainFrame mainFrame = new mainFrame(company);
