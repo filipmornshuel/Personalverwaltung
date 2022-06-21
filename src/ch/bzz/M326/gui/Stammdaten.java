@@ -43,6 +43,10 @@ public class Stammdaten extends JPanel {
 
     private Company company;
 
+    private DefaultListModel<String> modelFunktion;
+    private DefaultListModel<String> modelTeam;
+    private DefaultListModel<String> modelAbteilung;
+
     /**
      * Constructor for initialize firma-components and calling up the initializePanels and createStammDatenComponents method
      * @param pane to set the JTabbedPane
@@ -84,9 +88,22 @@ public class Stammdaten extends JPanel {
         pane.addTab("Stammdaten", stammDatenPanel);
         stammDatenPanel.add(firmaPanel);
 
-        createStammdatenComponent("Abteilungen", facade.getAllDepartments().toArray(),1);
-        createStammdatenComponent("Funktionen", facade.getAllJobFunctions().toArray(),2);
-        createStammdatenComponent("Teams", facade.getAllTeams().toArray(),3);
+        modelFunktion = new DefaultListModel<>();
+        for (int i = 0; i < facade.getAllJobFunctions().size(); i++) {
+            modelFunktion.addElement(facade.getAllJobFunctions().get(i));
+        }
+        modelTeam = new DefaultListModel<>();
+        for (int i = 0; i < facade.getAllTeams().size(); i++) {
+            modelTeam.addElement(facade.getAllTeams().get(i));
+        }
+        modelAbteilung = new DefaultListModel<>();
+        for (int i = 0; i < facade.getAllDepartments().size(); i++) {
+            modelAbteilung.addElement(facade.getAllDepartments().get(i));
+        }
+
+        createStammdatenComponent("Abteilungen", modelAbteilung,1);
+        createStammdatenComponent("Funktionen", modelFunktion,2);
+        createStammdatenComponent("Teams", modelTeam,3);
 
     }
 
@@ -94,9 +111,9 @@ public class Stammdaten extends JPanel {
     /**
      * Initialize all components and adding to the panels
      * @param name to set the name
-     * @param listElements to set the ListElements
+     * @param model to set the ListElements
      */
-    public void createStammdatenComponent(String name, Object[] listElements, int value){
+    public void createStammdatenComponent(String name, DefaultListModel<String> model, int value){
         //Facade
         StammdatenFacade facade = new StammdatenFacade(company);
 
@@ -104,20 +121,19 @@ public class Stammdaten extends JPanel {
         abteilungsPanelBorder = new JPanel(new BorderLayout());
         abteilungsPanel = new JPanel(new GridLayout(1,1, 0, 500));
 
-
         abteilung = new JLabel(name+": ");
 
         switch (value){
             case 1:
-                abteilungsListe = new JList(listElements);
+                abteilungsListe = new JList(modelAbteilung);
                 abteilungScrollPane = new JScrollPane(abteilungsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 break;
             case 2:
-                funktionsListe = new JList(listElements);
+                funktionsListe = new JList(modelFunktion);
                 abteilungScrollPane = new JScrollPane(funktionsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 break;
             case 3:
-                teamsListe = new JList(listElements);
+                teamsListe = new JList(modelTeam);
                 abteilungScrollPane = new JScrollPane(teamsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 break;
             default:
@@ -130,8 +146,7 @@ public class Stammdaten extends JPanel {
         abteilungAdden.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.out.println("morn");
-                CreateDialog createDialog = new CreateDialog(name, company);
+                CreateDialog createDialog = new CreateDialog(name, company, getListModel(value));
 
             }
         });
@@ -142,21 +157,17 @@ public class Stammdaten extends JPanel {
                 switch (value){
                     case 1:
                         facade.universalDelete(name, abteilungsListe.getSelectedValue());
-                        System.out.println(abteilungsListe.getSelectedValue());
-                        System.out.println(facade.universalGetList(name));
+                        modelAbteilung.removeElement(abteilungsListe.getSelectedValue());
                         break;
                     case 2:
                         facade.universalDelete(name, funktionsListe.getSelectedValue());
-                        System.out.println(funktionsListe.getSelectedValue());
-                        System.out.println(facade.universalGetList(name));
+                        modelFunktion.removeElement(funktionsListe.getSelectedValue());
                         break;
                     case 3:
                         facade.universalDelete(name, teamsListe.getSelectedValue());
-                        System.out.println(teamsListe.getSelectedValue());
-                        System.out.println(facade.universalGetList(name));
+                        modelTeam.removeElement(teamsListe.getSelectedValue());
                         break;
                 }
-
             }
         });
         abteilungBearbeiten = new JButton("Edit");
@@ -164,10 +175,7 @@ public class Stammdaten extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("morn");
-
-                new UpdateDialog(name, company,value, getJlist(value));
-
-
+                new UpdateDialog(name, company,value, getJlist(value), getListModel(value));
             }
         });
 
@@ -186,6 +194,19 @@ public class Stammdaten extends JPanel {
         stammDatenPanel.add(abteilungsPanel);
     }
 
+    public DefaultListModel<String> getListModel(int value){
+        switch (value){
+            case 1:
+                return modelAbteilung;
+            case 2:
+                return modelFunktion;
+            case 3:
+                return modelTeam;
+            default:
+                return null;
+        }
+    }
+
     public JList getJlist(int value){
         switch (value){
             case 1:
@@ -196,7 +217,6 @@ public class Stammdaten extends JPanel {
                 return teamsListe;
             default:
                 return null;
-
         }
     }
 
@@ -220,7 +240,7 @@ class CreateDialog extends JDialog{
      * @param text to set the name
      * @param company to set the company
      */
-    CreateDialog(String text, Company company){
+    CreateDialog(String text, Company company, DefaultListModel<String> model){
         //Facade
         StammdatenFacade facade = new StammdatenFacade(company);
 
@@ -240,7 +260,7 @@ class CreateDialog extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 temp = eingabeFeld.getText();
                 facade.universalAdd(text, temp);
-                System.out.println(facade.universalGetList(text));
+                model.addElement(temp);
                 dialog.dispose();
             }
         });
@@ -279,7 +299,7 @@ class UpdateDialog extends JDialog{
      * @param text to set the name
      * @param company to set the company
      */
-    UpdateDialog(String text, Company company, int value, JList jList){
+    UpdateDialog(String text, Company company, int value, JList jList, DefaultListModel<String> model){
         //Facade
         StammdatenFacade facade = new StammdatenFacade(company);
 
@@ -297,9 +317,8 @@ class UpdateDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 temp = eingabeFeld.getText();
-                facade.universalUpdate(text, facade.universalGetList(text).get(jList.getSelectedIndex()),temp );
-                System.out.println(facade.universalGetList(text));
-
+                facade.universalUpdate(text, facade.universalGetList(text).get(jList.getSelectedIndex()),temp);
+                model.set(jList.getSelectedIndex(), temp);
                 dialog.dispose();
             }
         });

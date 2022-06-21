@@ -111,7 +111,7 @@ public class StammdatenFacade {
    public void universalUpdate(String name, String oldDesignation, String newDesignation){
       switch (name){
          case "Abteilungen":
-            updateDepartment(new Department(oldDesignation), newDesignation);
+            updateDepartment(oldDesignation, newDesignation);
             break;
          case "Funktionen":
             updateFunction(oldDesignation, newDesignation);
@@ -140,8 +140,12 @@ public class StammdatenFacade {
     * @param department
     * @param name name as String
     */
-   public void updateDepartment(Department department, String name){
-      department.setName(name);
+   public void updateDepartment(String department, String name){
+      for (int i = 0; i < company.getDepartments().size(); i++) {
+         if(company.getDepartments(i).getName().equals(department)){
+            company.getDepartments(i).setName(name);
+         }
+      }
    }
 
    /**
