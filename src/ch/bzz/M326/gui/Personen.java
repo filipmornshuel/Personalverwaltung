@@ -5,21 +5,20 @@ import ch.bzz.M326.employees.PersonErfassenFacade;
 import ch.bzz.M326.employees.PersonenFacade;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Unsere Personen-GUI für das Programm
+ * Our Personen-GUI
  */
 public class Personen extends JPanel {
     /**
-     * Komponenten für das Erzeugen des GUIs
+     * Components for the PersonenGUI
      */
     private JTabbedPane pane;
-    private JLabel übersicht;
+    private JLabel uebersicht;
     private JList<String> personenListe;
     private ArrayList<String> personen;
     private JPanel personenPanel;
@@ -43,32 +42,28 @@ public class Personen extends JPanel {
     private JLabel bild;
     private ImageIcon imageIcon;
 
-
-    private JLabel hr;
-    private JLabel admin;
     private JCheckBox hrM;
     private JCheckBox adminstrator;
 
     private Company company;
 
     /**
-     * Konstruktor für das Ausführen der createPersonenComponents-Methode
-     * @param pane Weitergabe des JTabbedPanes
+     * Constructor to run the createPersonenComponents-Method and initializePanels-Method
+     * @param pane to set the JTabbedPane
+     * @param company to set the company
      */
     public Personen(JTabbedPane pane, Company company){
         this.pane = pane;
         this.company = company;
+        initializePanels();
         createPersonenComponents();
         pane.addTab("Personen", personenPanel);
     }
 
     /**
-     * Methode zum Initialisieren aller Attribute
+     * Method to initialize Panels
      */
-    public void createPersonenComponents(){
-
-        PersonenFacade facade = new PersonenFacade(company);
-
+    public void initializePanels(){
         personenPanel = new JPanel(new BorderLayout());
         personenListPanel = new JPanel(new BorderLayout());
 
@@ -76,11 +71,8 @@ public class Personen extends JPanel {
         personenDetailBildMainPanel = new JPanel(new BorderLayout());
 
         personenDetailBildPanel = new JPanel();
-        //personenDetailBildPanel.setLayout(new BoxLayout(personenDetailBildPanel, BoxLayout.PAGE_AXIS));
         springLayout = new SpringLayout();
         personenDetailBildPanel.setLayout(springLayout);
-        //personenDetailBildPanel = new JPanel(new GridLayout(2,2));
-
 
         personenDetailRollenPanel = new JPanel();
         personenDetailRollenPanel.setLayout(new GridBagLayout());
@@ -90,19 +82,44 @@ public class Personen extends JPanel {
         personenDetailBildNebenPanel.setLayout(new BoxLayout(personenDetailBildNebenPanel, BoxLayout.PAGE_AXIS));
 
         personenListButtonsPanel = new JPanel(new GridLayout(1,3));
+    }
 
-        //Betreffend Liste
-        personenPanel.setBorder(BorderFactory.createTitledBorder("Personen bearbeiten:"));
-        personenListe = new JList<>();
-        personenListe = new JList(facade.getMitarbeiterNameListe().toArray());
-        übersicht = new JLabel("Übersicht");
-        personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
-        personenListPanel.add(personenScrollPane, BorderLayout.CENTER);
+    /**
+     * Method to initialize all components and adding to the panels
+     */
+    public void createPersonenComponents(){
+        //Facade
+        PersonenFacade facade = new PersonenFacade(company);
 
+        //Components
+        name = new JLabel("Name: ");
+        field = new JTextField(facade.getName(company.getPeople().get(0)));
+        platzhalter = new JLabel();
+        bild = new JLabel();
+        imageIcon = new ImageIcon("src/pic.png");
+        bild.setIcon(imageIcon);
+
+        //Detail-Checkbox
+        hrM = new JCheckBox("HR-Mtiarbeiter");
+        adminstrator = new JCheckBox("Adminstrator: ");
+
+        //ListButtons
         delete = new JButton("Delete");
         bearbeiten = new JButton("Edit");
         create = new JButton("New");
 
+        //List
+        personenListe = new JList<>();
+        personenListe = new JList(facade.getMitarbeiterNameListe().toArray());
+        uebersicht = new JLabel("Übersicht");
+
+        //List
+        personenPanel.setBorder(BorderFactory.createTitledBorder("Personen bearbeiten:"));
+
+        personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
+        personenListPanel.add(personenScrollPane, BorderLayout.CENTER);
+
+        //ListButtons
         personenListButtonsPanel.add(create);
         create.addActionListener(new ActionListener() {
             @Override
@@ -112,70 +129,73 @@ public class Personen extends JPanel {
         });
 
         personenListButtonsPanel.add(delete);
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         personenListButtonsPanel.add(bearbeiten);
+        bearbeiten.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        //Adding ListButtonsPanel to ListPanel
         personenListPanel.add(personenListButtonsPanel, BorderLayout.SOUTH);
-        personenListPanel.add(übersicht, BorderLayout.NORTH);
+        personenListPanel.add(uebersicht, BorderLayout.NORTH);
 
-
-        //DetailPanel betreffend
+        //DetailPanel
         personenDetailPanel.setBorder(BorderFactory.createTitledBorder("Detail:"));
 
-        name = new JLabel("Name: ");
-        field = new JTextField(facade.getName(company.getPeople().get(0)));
-        platzhalter = new JLabel();
-        bild = new JLabel();
-        imageIcon = new ImageIcon("src/pic.png");
-        bild.setIcon(imageIcon);
-
-        hrM = new JCheckBox("HR-Mtiarbeiter");
-        adminstrator = new JCheckBox("Adminstrator: ");
-
-        //personenDetailBildPanel.add(name);
+        //With SpringLayout
         springLayout.putConstraint(SpringLayout.EAST, field, -90, SpringLayout.EAST, personenDetailBildPanel);
         springLayout.putConstraint(SpringLayout.NORTH, field, 0, SpringLayout.NORTH, personenDetailBildPanel);
         field.setColumns(20);
         personenDetailBildPanel.add(field);
 
+        //With SpringLayout
         springLayout.putConstraint(SpringLayout.EAST, bild, 280, SpringLayout.WEST, personenDetailBildPanel);
         springLayout.putConstraint(SpringLayout.NORTH, bild, 50, SpringLayout.NORTH, personenDetailBildPanel);
         personenDetailBildPanel.add(bild);
 
+        //NebenPanel
         personenDetailBildNebenPanel.add(name);
         personenDetailBildNebenPanel.add(platzhalter);
 
+        //With GridBagLayout
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy=0;
         personenDetailRollenPanel.add(hrM, gridBagConstraints);
 
+        //With GridBagLayout
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy=1;
         personenDetailRollenPanel.add(adminstrator, gridBagConstraints);
 
+        //Adding all Panels to MainPanel
         personenDetailBildMainPanel.add(personenDetailBildPanel, BorderLayout.CENTER);
         personenDetailBildMainPanel.add(personenDetailBildNebenPanel, BorderLayout.WEST);
         personenDetailBildMainPanel.add(new JSeparator(), BorderLayout.SOUTH);
 
-
+        //MainPanel adding to DetialPanel
         personenDetailPanel.add(personenDetailBildMainPanel, BorderLayout.CENTER);
         personenDetailPanel.add(personenDetailRollenPanel, BorderLayout.SOUTH);
 
-
-        //ListPanel und DetailPanel zusammensetzen
+        //ListPanel and DetailPanel
         personenPanel.add(personenListPanel, BorderLayout.WEST);
         personenPanel.add(personenDetailPanel, BorderLayout.CENTER);
-
-
-
-
     }
 }
 
 /**
- * Innere Klasse für das Erzeugen einer neuen Person
+ * Inner Class to create a new person
  */
 class CreatePersonDialog extends JDialog{
     /**
-     * Komponenten für das JDialog
+     * Components for JDialog
      */
     private JPanel personenDetailPanel;
     private JPanel personenDetailBildMainPanel;
@@ -183,7 +203,6 @@ class CreatePersonDialog extends JDialog{
     private JPanel personenDetailBildPanel;
     private JPanel personenDetailRollenPanel;
     private GridBagConstraints gridBagConstraints;
-    private GridBagLayout gridBagLayout;
     private JLabel name;
     private JTextField field;
     private JLabel foto;
@@ -197,8 +216,9 @@ class CreatePersonDialog extends JDialog{
     private Company company;
 
     /**
-     * Konstruktor für das Erzeugen der Komponenten
-     * @param text Weitergabe des Namens
+     * Constructor to initialize all components and adding to the panels
+     * @param text parameter to set the name
+     * @param company paramter to set the company
      */
     CreatePersonDialog(String text, Company company){
         PersonErfassenFacade facade = new PersonErfassenFacade(company);
@@ -213,8 +233,8 @@ class CreatePersonDialog extends JDialog{
         foto = new JLabel("Foto: ");
         imageIcon = new ImageIcon("src/pic.png");
         bild = new JLabel(imageIcon);
-
-
+        adminstrator = new JCheckBox("Administrator");
+        hrM = new JCheckBox("HR-Mitarbeiter");
 
         //Ok Listener, Verarbeitung des Buttons
         speichernButton = new JButton("Speichern");
@@ -229,6 +249,7 @@ class CreatePersonDialog extends JDialog{
         abortBtn.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 dialog.dispose();
             }
         });
@@ -242,6 +263,10 @@ class CreatePersonDialog extends JDialog{
         personenDetailBildPanel = new JPanel();
         personenDetailBildPanel.setLayout(new BoxLayout(personenDetailBildPanel, BoxLayout.PAGE_AXIS));
 
+        personenDetailRollenPanel = new JPanel();
+        personenDetailRollenPanel.setLayout(new GridBagLayout());
+        gridBagConstraints = new GridBagConstraints();
+
         personenDetailBildPanel.add(field);
         personenDetailBildPanel.add(bild);
 
@@ -251,14 +276,6 @@ class CreatePersonDialog extends JDialog{
         personenDetailBildMainPanel.add(personenDetailBildPanel, BorderLayout.CENTER);
         personenDetailBildMainPanel.add(personenDetailBildNebenPanel, BorderLayout.WEST);
         personenDetailBildMainPanel.add(new JSeparator(), BorderLayout.SOUTH);
-
-        personenDetailRollenPanel = new JPanel();
-        personenDetailRollenPanel.setLayout(new GridBagLayout());
-        gridBagConstraints = new GridBagConstraints();
-
-        adminstrator = new JCheckBox("Administrator");
-        hrM = new JCheckBox("HR-Mitarbeiter");
-
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -271,7 +288,6 @@ class CreatePersonDialog extends JDialog{
         personenDetailPanel.add(personenDetailBildMainPanel, BorderLayout.CENTER);
         personenDetailPanel.add(personenDetailRollenPanel, BorderLayout.SOUTH);
         this.getContentPane().add(personenDetailPanel, BorderLayout.CENTER);
-
 
         JPanel btnPanel = new JPanel(new GridLayout(1,2));
         btnPanel.add(abortBtn);

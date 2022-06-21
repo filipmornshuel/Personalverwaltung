@@ -37,6 +37,14 @@ public class Company {
     }
 
     /**
+     * gets all hr People
+     * @return
+     */
+    public Vector<HRPerson> getHrPeople() {
+        return hrPeople;
+    }
+
+    /**
      * gets the logbook
      * @return
      */
