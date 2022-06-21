@@ -2,6 +2,7 @@ package ch.bzz.M326.company;
 
 import ch.bzz.M326.employees.HRPerson;
 import ch.bzz.M326.employees.Person;
+import ch.bzz.M326.log.LogBook;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -22,6 +23,7 @@ public class Company {
     private Team teams;
     private Vector<Person> people;
     private Vector<HRPerson> hrPeople;
+    private LogBook logBook;
 
     /**
      * constuctor of class department
@@ -32,6 +34,22 @@ public class Company {
         people = new Vector<>();
         departments = new Vector<>();
         hrPeople = new Vector<>();
+    }
+
+    /**
+     * gets the logbook
+     * @return
+     */
+    public LogBook getLogBook() {
+        return logBook;
+    }
+
+    /**
+     * sets the logbook
+     * @param logBook
+     */
+    public void setLogBook(LogBook logBook) {
+        this.logBook = logBook;
     }
 
     /**

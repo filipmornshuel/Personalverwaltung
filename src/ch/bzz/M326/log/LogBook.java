@@ -25,6 +25,7 @@ public class LogBook {
      * constructor of the class LogBook without parameter
      */
     public LogBook(){
+        entries = new Vector<>();
         file = new File("logboook.log");
         try {
             if (!file.createNewFile()){
@@ -61,6 +62,14 @@ public class LogBook {
         if (fileWritingEnabled){
             writeFile(entry);
         }
+    }
+
+    /**
+     * adds an entry to the list
+     * @param entry
+     */
+    public void addEntryToList(String entry){
+        entries.add(entry);
     }
 
     /**

@@ -11,7 +11,7 @@ import java.util.Vector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Testing different functions of the Test
+ * Testing different functions of the facades
  * @author Nadim Bhatti
  * @since 2022-06-21
  * @version 1.0
