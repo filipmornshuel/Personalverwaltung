@@ -24,13 +24,7 @@ public class UebersichtFacade {
     * @return all employees
     */
    public Vector<Person> getMitarbeiterListe(){
-      Vector<Person> allPersons = new Vector<>();
-      for (int i = 0; i < company.getDepartments().size(); i++) {
-         for (int j = 0; j < company.getDepartments(i).getNumberOfMembers(); j++) {
-            allPersons.add(company.getDepartments(i).getMembers(j));
-         }
-      }
-      return allPersons;
+      return company.getPeople();
    }
 
    /**
