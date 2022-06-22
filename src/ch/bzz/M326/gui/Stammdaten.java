@@ -15,12 +15,11 @@ import java.util.Vector;
 
 /**
  * Our StammDaten-GUI
+ * @author Filip Slavkovic
+ * @since 2022-06-20
+ * @version 1.0
  */
 public class Stammdaten extends JPanel {
-
-    /**
-     * Components for the StammdatenPanel
-     */
     private JTabbedPane pane;
     private JPanel stammDatenPanel;
     private JPanel firmaPanel;
@@ -181,9 +180,6 @@ public class Stammdaten extends JPanel {
         });
 
 
-        //abteilungScrollPane = new JScrollPane(abteilungsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-
         abteilungsButton.add(abteilungAdden);
         abteilungsButton.add(abteilungLöschen);
         abteilungsButton.add(abteilungBearbeiten);
@@ -227,10 +223,6 @@ public class Stammdaten extends JPanel {
  * Inner class to create new StammDaten
  */
 class CreateDialog extends JDialog{
-
-    /**
-     * Components for the JDialog
-     */
     private JTextField eingabeFeld;
     private JButton speichernButton, abortBtn;
     private JDialog dialog;
@@ -286,9 +278,6 @@ class CreateDialog extends JDialog{
  * Inner class to update StammDaten
  */
 class UpdateDialog extends JDialog{
-    /**
-     * Components for the JDialog
-     */
     private JTextField eingabeFeld;
     private JButton speichernButton, abortBtn;
     private JDialog dialog;

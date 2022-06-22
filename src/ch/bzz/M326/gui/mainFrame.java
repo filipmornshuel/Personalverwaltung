@@ -7,12 +7,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * Das MainFrame, indem alle Panes zueinanderfinden
+ * The mainframe of all TabbedPanes
+ * @author Filip Slavkovic
+ * @since 2022-06-22
+ * @version 1.0
  */
 public class mainFrame extends JFrame {
-    /**
-     * Komponenten für das MainFrame
-     */
     private JTabbedPane pane;
     private Logbuch logbuchTab;
     private Stammdaten stammdatenTab;
@@ -24,7 +24,7 @@ public class mainFrame extends JFrame {
     private int cnt = 1;
 
     /**
-     * Konstruktor für das MainFrame
+     * Constructor to set all components to the Panel
      */
     public mainFrame(Company company){
 

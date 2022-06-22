@@ -12,11 +12,11 @@ import java.util.ArrayList;
 
 /**
  * Our Zuordnung-GUI
+ * @author Filip Slavkovic
+ * @since 2022-06-20
+ * @version 1.0
  */
 public class Zuordnung extends JPanel {
-    /**
-     * Components for the gui
-     */
     private JTabbedPane pane;
     private JLabel übersicht;
     private JList<String> personenListe;

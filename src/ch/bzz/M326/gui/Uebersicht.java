@@ -8,12 +8,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Unsere Uebersicht-GUI für das Programm
+ * Our Uebersicht-GUI
+ * @author Isuf Hasani
+ * @since 2022-06-20
+ * @version 1.0
  */
 public class Uebersicht extends JPanel {
-    /**
-     * Komponenten für das Erzeugen des GUIs
-     */
     private JTabbedPane pane;
     private JLabel übersicht;
     private JList<String> personenListe;
@@ -81,8 +81,9 @@ public class Uebersicht extends JPanel {
     private Company company;
 
     /**
-     * Konstruktor für das Aufrufen der createZurodnungComponents-Methode
-     * @param pane Weitergabe des JTabbedPanes
+     * Constructor to call up the createZordnungComponents-method
+     * @param pane to set the pane
+     * @param company to set the company
      */
     public Uebersicht(JTabbedPane pane, Company company){
         this.pane = pane;
@@ -93,7 +94,7 @@ public class Uebersicht extends JPanel {
     }
 
     /**
-     * Methode zum Initialisieren der Attribute
+     * Method to initialize the components and adding it to the panels
      */
     public void createZuordnungComponents(){
 

@@ -12,11 +12,11 @@ import java.util.ArrayList;
 
 /**
  * Our Personen-GUI
+ * @author Filip Slavkovic
+ * @since 2022-06-20
+ * @version 1.0
  */
 public class Personen extends JPanel {
-    /**
-     * Components for the PersonenGUI
-     */
     private JTabbedPane pane;
     private JLabel uebersicht;
     private JList<String> personenListe;
@@ -221,9 +221,6 @@ public class Personen extends JPanel {
  * Inner Class to create a new person
  */
 class CreatePersonDialog extends JDialog{
-    /**
-     * Components for JDialog
-     */
     private JPanel personenDetailPanel;
     private JPanel personenDetailBildMainPanel;
     private JPanel personenDetailBildNebenPanel;
@@ -334,9 +331,6 @@ class CreatePersonDialog extends JDialog{
  * Inner Class to update a person
  */
 class UpdatePersonDialog extends JDialog{
-    /**
-     * Components for JDialog
-     */
     private JPanel personenDetailPanel;
     private JPanel personenDetailBildMainPanel;
     private JPanel personenDetailBildNebenPanel;

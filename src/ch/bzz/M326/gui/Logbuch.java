@@ -7,11 +7,11 @@ import java.awt.*;
 
 /**
  * Our Logbuch-GUI
+ * @author Filip Slavkovic
+ * @since 2022-06-22
+ * @version 1.0
  */
 public class Logbuch extends JPanel{
-    /**
-     * Components für for the LogPanel
-     */
     private JTabbedPane pane;
     private JPanel logPanel;
     private JScrollPane logScrollPane;
