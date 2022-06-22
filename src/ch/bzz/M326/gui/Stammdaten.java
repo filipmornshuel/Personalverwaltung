@@ -5,6 +5,8 @@ import ch.bzz.M326.company.Department;
 import ch.bzz.M326.company.StammdatenFacade;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,8 +36,15 @@ public class Stammdaten extends JPanel {
     private JList<String> funktionsListe;
     private JList<String> teamsListe;
     private JButton abteilungAdden;
+
     private JButton abteilungBearbeiten;
+    private JButton funktionBearbeiten;
+    private JButton teamBearbeiten;
+
     private JButton abteilungLöschen;
+    private JButton funktionLöschen;
+    private JButton teamLöschen;
+
     private JScrollPane abteilungScrollPane;
     private ArrayList<String> texts;
     private JPanel abteilungsButton;
@@ -58,7 +67,7 @@ public class Stammdaten extends JPanel {
         this.pane = pane;
         this.company = company;
 
-        //Needed for the firmaPanel --> usually in the initializePanels method
+        //Needed for the firmaPanel --> usually in the initializePanels methode
         stammDatenPanel = new JPanel(new GridLayout(4,1, 50,20));
 
         //SpringLayout
@@ -126,14 +135,68 @@ public class Stammdaten extends JPanel {
         switch (value){
             case 1:
                 abteilungsListe = new JList(modelAbteilung);
+                abteilungLöschen = new JButton("Delete");
+                abteilungLöschen.setEnabled(false);
+                abteilungBearbeiten = new JButton("Edit");
+                abteilungBearbeiten.setEnabled(false);
+                abteilungsListe.addListSelectionListener(new ListSelectionListener() {
+                    @Override
+                    public void valueChanged(ListSelectionEvent e) {
+                        if(e.getValueIsAdjusting()){
+                            if (abteilungsListe.getSelectedValue() != null) {
+                                abteilungLöschen.setEnabled(true);
+                                abteilungBearbeiten.setEnabled(true);
+                            } else {
+                                abteilungLöschen.setEnabled(false);
+                                abteilungBearbeiten.setEnabled(false);
+                            }
+                        }
+                    }
+                });
                 abteilungScrollPane = new JScrollPane(abteilungsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 break;
             case 2:
                 funktionsListe = new JList(modelFunktion);
+                funktionLöschen = new JButton("Delete");
+                funktionLöschen.setEnabled(false);
+                funktionBearbeiten = new JButton("Edit");
+                funktionBearbeiten.setEnabled(false);
+                funktionsListe.addListSelectionListener(new ListSelectionListener() {
+                    @Override
+                    public void valueChanged(ListSelectionEvent e) {
+                        if(e.getValueIsAdjusting()){
+                            if(funktionsListe.getSelectedValue() != null){
+                                funktionLöschen.setEnabled(true);
+                                funktionBearbeiten.setEnabled(true);
+                            }else{
+                                funktionLöschen.setEnabled(false);
+                                funktionBearbeiten.setEnabled(false);
+                            }
+                        }
+                    }
+                });
                 abteilungScrollPane = new JScrollPane(funktionsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 break;
             case 3:
                 teamsListe = new JList(modelTeam);
+                teamLöschen = new JButton("Delete");
+                teamLöschen.setEnabled(false);
+                teamBearbeiten = new JButton("Edit");
+                teamBearbeiten.setEnabled(false);
+                teamsListe.addListSelectionListener(new ListSelectionListener() {
+                    @Override
+                    public void valueChanged(ListSelectionEvent e) {
+                        if(e.getValueIsAdjusting()){
+                            if (teamsListe.getSelectedValue() != null) {
+                                teamLöschen.setEnabled(true);
+                                teamBearbeiten.setEnabled(true);
+                            } else {
+                                teamLöschen.setEnabled(false);
+                                teamBearbeiten.setEnabled(false);
+                            }
+                        }
+                    }
+                });
                 abteilungScrollPane = new JScrollPane(teamsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 break;
             default:
@@ -146,49 +209,82 @@ public class Stammdaten extends JPanel {
         abteilungAdden.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CreateDialog createDialog = new CreateDialog(name, company, getListModel(value));
-
+                CreateDialog createDialog = new CreateDialog(name, company, getListModel(value), getEditButton(value), getDeleteButton(value));
             }
         });
-        abteilungLöschen = new JButton("Delete");
-        abteilungLöschen.addActionListener(new ActionListener() {
+
+        getDeleteButton(value).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (value){
                     case 1:
                         facade.universalDelete(name, abteilungsListe.getSelectedValue());
                         modelAbteilung.removeElement(abteilungsListe.getSelectedValue());
+                        abteilungBearbeiten.setEnabled(false);
+                        abteilungLöschen.setEnabled(false);
                         break;
                     case 2:
                         facade.universalDelete(name, funktionsListe.getSelectedValue());
                         modelFunktion.removeElement(funktionsListe.getSelectedValue());
+                        funktionBearbeiten.setEnabled(false);
+                        funktionLöschen.setEnabled(false);
                         break;
                     case 3:
                         facade.universalDelete(name, teamsListe.getSelectedValue());
                         modelTeam.removeElement(teamsListe.getSelectedValue());
+                        teamBearbeiten.setEnabled(false);
+                        teamLöschen.setEnabled(false);
                         break;
+                }
+                if(getJlist(value).getModel().getSize() == 0){
+                    getDeleteButton(value).setEnabled(false);
+                    getEditButton(value).setEnabled(false);
                 }
             }
         });
-        abteilungBearbeiten = new JButton("Edit");
-        abteilungBearbeiten.addActionListener(new ActionListener() {
+        getEditButton(value).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("morn");
-                new UpdateDialog(name, company,value, getJlist(value), getListModel(value));
+                new UpdateDialog(name, company,value, getJlist(value), getListModel(value), getEditButton(value), getDeleteButton(value));
             }
         });
 
 
         abteilungsButton.add(abteilungAdden);
-        abteilungsButton.add(abteilungLöschen);
-        abteilungsButton.add(abteilungBearbeiten);
+        abteilungsButton.add(getDeleteButton(value));
+        abteilungsButton.add(getEditButton(value));
         abteilungsPanel.add(abteilung);
         abteilungsPanel.add(abteilungsPanelBorder);
         abteilungsPanelBorder.add(abteilungScrollPane, BorderLayout.CENTER);
         abteilungsPanelBorder.add(abteilungsButton, BorderLayout.SOUTH);
 
         stammDatenPanel.add(abteilungsPanel);
+    }
+
+    public JButton getEditButton(int value){
+        switch (value){
+            case 1:
+                return abteilungBearbeiten;
+            case 2:
+                return funktionBearbeiten;
+            case 3:
+                return teamBearbeiten;
+            default:
+                return null;
+        }
+    }
+
+    public JButton getDeleteButton(int value){
+        switch (value){
+            case 1:
+                return abteilungLöschen;
+            case 2:
+                return funktionLöschen;
+            case 3:
+                return teamLöschen;
+            default:
+                return null;
+        }
     }
 
     public DefaultListModel<String> getListModel(int value){
@@ -233,7 +329,7 @@ class CreateDialog extends JDialog{
      * @param text to set the name
      * @param company to set the company
      */
-    CreateDialog(String text, Company company, DefaultListModel<String> model){
+    CreateDialog(String text, Company company, DefaultListModel<String> model, JButton edit, JButton delete){
         //Facade
         StammdatenFacade facade = new StammdatenFacade(company);
 
@@ -254,6 +350,10 @@ class CreateDialog extends JDialog{
                 temp = eingabeFeld.getText();
                 facade.universalAdd(text, temp);
                 model.addElement(temp);
+                if(model.getSize() > 0){
+                    edit.setEnabled(true);
+                    delete.setEnabled(true);
+                }
                 dialog.dispose();
             }
         });
@@ -289,7 +389,7 @@ class UpdateDialog extends JDialog{
      * @param text to set the name
      * @param company to set the company
      */
-    UpdateDialog(String text, Company company, int value, JList jList, DefaultListModel<String> model){
+    UpdateDialog(String text, Company company, int value, JList jList, DefaultListModel<String> model, JButton edit, JButton delete){
         //Facade
         StammdatenFacade facade = new StammdatenFacade(company);
 
@@ -309,6 +409,8 @@ class UpdateDialog extends JDialog{
                 temp = eingabeFeld.getText();
                 facade.universalUpdate(text, facade.universalGetList(text).get(jList.getSelectedIndex()),temp);
                 model.set(jList.getSelectedIndex(), temp);
+                edit.setEnabled(false);
+                delete.setEnabled(false);
                 dialog.dispose();
             }
         });

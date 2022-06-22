@@ -232,24 +232,26 @@ public class App {
 
 
 
-      HRPerson hrPerson = new HRPerson("Chasper", "Siegenthaler", new ImageIcon("pic.png"), 1);
+      HRPerson hrPerson1 = new HRPerson("Filip", "Slavkovic", new ImageIcon("pic.png"), 1);
+      HRPerson hrPerson2 = new HRPerson("Nadim", "Bhatti", new ImageIcon("pic.png"), 2);
+
       LogBook logBook = new LogBook();
-      Useraction u1 = new Useraction(hrPerson, person1, 0);
+      Useraction u1 = new Useraction(hrPerson1, person1, 0);
       System.out.println(u1.getEntry());
-      Useraction u2 = new Useraction(hrPerson, person8, 1);
-      Useraction u3 = new Useraction(hrPerson, person3, 2);
-      Useraction u4 = new Useraction(hrPerson, person10, 3);
-      Useraction u5 = new Useraction(hrPerson, person16, 0);
-      Useraction u6 = new Useraction(hrPerson, person12, 2);
-      Useraction u7 = new Useraction(hrPerson, person10, 2);
-      Useraction u8 = new Useraction(hrPerson, person5, 1);
-      Useraction u9 = new Useraction(hrPerson, person6, 0);
-      Useraction u10 = new Useraction(hrPerson, person9, 0);
-      Useraction u11 = new Useraction(hrPerson, person9, 2);
-      Useraction u12 = new Useraction(hrPerson, person14, 3);
-      Useraction u13 = new Useraction(hrPerson, person3, 0);
-      Useraction u14 = new Useraction(hrPerson, person2, 2);
-      Useraction u15 = new Useraction(hrPerson, person7, 1);
+      Useraction u2 = new Useraction(hrPerson1, person8, 1);
+      Useraction u3 = new Useraction(hrPerson1, person3, 2);
+      Useraction u4 = new Useraction(hrPerson1, person10, 3);
+      Useraction u5 = new Useraction(hrPerson1, person16, 0);
+      Useraction u6 = new Useraction(hrPerson1, person12, 2);
+      Useraction u7 = new Useraction(hrPerson1, person10, 2);
+      Useraction u8 = new Useraction(hrPerson1, person5, 1);
+      Useraction u9 = new Useraction(hrPerson1, person6, 0);
+      Useraction u10 = new Useraction(hrPerson1, person9, 0);
+      Useraction u11 = new Useraction(hrPerson1, person9, 2);
+      Useraction u12 = new Useraction(hrPerson1, person14, 3);
+      Useraction u13 = new Useraction(hrPerson1, person3, 0);
+      Useraction u14 = new Useraction(hrPerson1, person2, 2);
+      Useraction u15 = new Useraction(hrPerson1, person7, 1);
 
 
       logBook.addEntryToList(u1.getEntry());
@@ -271,7 +273,8 @@ public class App {
       logBook.printLog();
 
       company.setLogBook(logBook);
-      company.addHRPerson(hrPerson);
+      company.addHRPerson(hrPerson1);
+      company.addHRPerson(hrPerson2);
 
       mainFrame mainFrame = new mainFrame(company);
 
