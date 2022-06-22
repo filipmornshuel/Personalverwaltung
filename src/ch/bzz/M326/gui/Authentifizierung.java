@@ -10,6 +10,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Our Authentifizierungs-GUI for the TabbedPanes
+ * @author Filip Slavkovic
+ * @since 2022-06-22
+ * @version 1.0
+ */
 public class Authentifizierung extends JDialog {
     private JDialog dialog;
     private JLabel name;
@@ -27,6 +33,12 @@ public class Authentifizierung extends JDialog {
     private JTabbedPane pane;
     private int temp;
 
+    /**
+     * Constructor to call up the createComponentsmethod
+     * @param frame to set the frame
+     * @param company to set the company
+     * @param pane to set the pane
+     */
     public Authentifizierung(JFrame frame, Company company, JTabbedPane pane){
         super(frame,true);
         this.dialog = this;
@@ -39,6 +51,9 @@ public class Authentifizierung extends JDialog {
         setVisible(true);
     }
 
+    /**
+     * Method to initialize all components and adding to the panels
+     */
     public void createComponents(){
         AuthentificationFacade authentificationFacade = new AuthentificationFacade(company);
 
@@ -92,13 +107,5 @@ public class Authentifizierung extends JDialog {
         this.getContentPane().add(components, BorderLayout.CENTER);
         this.getContentPane().add(buttons, BorderLayout.SOUTH);
 
-    }
-
-    public boolean isCorrect() {
-        return correct;
-    }
-
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
     }
 }
