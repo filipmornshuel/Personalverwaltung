@@ -19,6 +19,8 @@ public class Person {
     private String fristName;
     private String lastName;
     private Participation participation;
+    private String jobfunction;
+    private String team;
     private Department department;
     private String role;
 
@@ -26,6 +28,26 @@ public class Person {
         this.fristName = fristName;
         this.lastName = lastName;
         this.photo = photo;
+    }
+
+    public void setJobfunction(String jobfunction) {
+        this.jobfunction = jobfunction;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
+
+    public String getJobfunction() {
+        return jobfunction;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public String getName(){
+        return fristName + " " + lastName;
     }
 
     public String getRole() {
@@ -73,7 +95,7 @@ public class Person {
     }
 
     public void setDepartment(Department department) {
-        if(department == null){
+        if(this.department == null){
             this.department = department;
         }else{
             this.department.removeMemberByPerson(this);

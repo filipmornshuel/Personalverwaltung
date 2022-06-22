@@ -93,8 +93,8 @@ public class ZuordnungFacade {
     * @param person
     * @param jobFunctions
     */
-   public void addFunction(Person person, String jobFunctions){
-      person.getParticipation().addFunction(jobFunctions);
+   public void setFunction(Person person, String jobFunctions){
+      person.setJobfunction(jobFunctions);
    }
 
    /**
@@ -102,8 +102,8 @@ public class ZuordnungFacade {
     * @param person
     * @param team
     */
-   public void addTeam(Person person, String team){
-      person.getParticipation().addTeam(team);
+   public void setTeam(Person person, String team){
+      person.setTeam(team);
    }
 
    /**
@@ -114,35 +114,45 @@ public class ZuordnungFacade {
       return person.getPhoto();
    }
 
-   /**
-    * gets all functions of a Person
-    * @return all functions as a String Vector
-    */
-   public Vector<String> getFunctionsByPerson(Person person){
-      Vector<String> functions = new Vector<String>();
-      for (int i = 0; i < person.getParticipation().getNumberOfFunctions(); i++) {
-         functions.add(person.getParticipation().getFunctionName(i));
-      }
-      return functions;
-   }
-
-   /**
-    * gets all teams the Person is in
-    * @return all teams as a String Vector
-    */
-   public Vector<String> getTeamsByPerson(Person person){
-      Vector<String> teams = new Vector<String>();
-      for (int i = 0; i < person.getParticipation().getNumberOfTeams(); i++) {
-         teams.add(person.getParticipation().getTeamName(i));
-      }
-      return teams;
-   }
 
    /**
     * gets the department of the person
     * @return department as a String
     */
-   public String getDepartmentByPerson(Person person){
+   public String getDepartment(Person person){
       return person.getDepartment().getName();
+   }
+
+   public Person getPersonByName(String name){
+      Person person = new Person(null, null, null);
+      for (int i = 0; i < getMitarbeiterListe().size(); i++) {
+         if(getMitarbeiterListe().get(i).getName().equals(name)){
+            person =  getMitarbeiterListe().get(i);
+         }
+      }
+      if(person != null){
+         return person;
+      }
+      else {
+         return null;
+      }
+   }
+
+   /**
+    * gets the team of a person
+    * @param person
+    * @return
+    */
+   public String getTeam(Person person){
+      return person.getTeam();
+   }
+
+   /**
+    * gets the jobfunction of a person
+    * @param person
+    * @return
+    */
+   public String getFunction(Person person){
+      return person.getJobfunction();
    }
 }

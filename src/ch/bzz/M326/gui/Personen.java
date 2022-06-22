@@ -115,11 +115,12 @@ public class Personen extends JPanel {
 
         //List
         personenListe = new JList<>();
-        personenListe = new JList(modelPersonen);
+        personenListe = new JList<>(modelPersonen);
         MouseListener mouseListener = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 field.setText(personenListe.getSelectedValue());
+
 
             }
         };

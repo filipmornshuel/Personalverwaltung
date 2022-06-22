@@ -5,6 +5,9 @@ import ch.bzz.M326.employees.ZuordnungFacade;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 /**
@@ -46,6 +49,7 @@ public class Zuordnung extends JPanel {
     private ArrayList<String> teamsListe;
 
     private Company company;
+    private DefaultListModel<String> model;
 
     /**
      * Constructor for calling up the initalizePanels and createZurodnungComponents methods
@@ -90,15 +94,10 @@ public class Zuordnung extends JPanel {
 
         //Facade
         ZuordnungFacade zuordnungFacade = new ZuordnungFacade(company);
-
-        //Components
-        personenListe = new JList<>();
-        personenListe = new JList(zuordnungFacade.getMitarbeiterNameListe().toArray());
-        übersicht = new JLabel("Übersicht");
-        personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
+        field = new JTextField(zuordnungFacade.getName(company.getPeople().get(0)));
 
         name = new JLabel("Name: ");
-        field = new JTextField(zuordnungFacade.getName(company.getPeople().get(0)));
+        field.setEditable(false);
         platzhalter = new JLabel();
         bild = new JLabel();
         imageIcon = new ImageIcon("src/pic.png");
@@ -107,14 +106,41 @@ public class Zuordnung extends JPanel {
         abteilung = new JLabel("Abteilung: ");
         funktion = new JLabel("Funktion: ");
         teams = new JLabel("Teams: ");
-        abteilungsField = new JTextField("Finance");
+        abteilungsField = new JTextField(zuordnungFacade.getDepartment(zuordnungFacade.getMitarbeiterListe().get(0)));
         funktionenListe = new ArrayList<>();
         funktionenListe.add("Funktion wählen");
         teamsListe=new ArrayList<>();
         teamsListe.add("Team wählen");
 
         funktionenBox = new JComboBox(zuordnungFacade.getAllJobFunctions().toArray());
+        funktionenBox.setSelectedItem(zuordnungFacade.getMitarbeiterNameListe().get(0));
         teamsBox = new JComboBox(zuordnungFacade.getAllTeams().toArray());
+        teamsBox.setSelectedItem(zuordnungFacade.getMitarbeiterNameListe().get(0));
+
+        model = new DefaultListModel<>();
+        for (int i = 0; i < zuordnungFacade.getMitarbeiterNameListe().size(); i++) {
+            model.addElement(zuordnungFacade.getMitarbeiterNameListe().get(i));
+        }
+
+
+        //Components
+        personenListe = new JList<>();
+        personenListe = new JList(model);
+        übersicht = new JLabel("Übersicht");
+        personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
+        MouseListener mouseListener = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                field.setText(personenListe.getSelectedValue());
+                System.out.println((personenListe.getSelectedValue()));
+                abteilungsField.setText(zuordnungFacade.getDepartment(zuordnungFacade.getPersonByName(personenListe.getSelectedValue())));
+                funktionenBox.setSelectedIndex(personenListe.getSelectedIndex());
+                teamsBox.setSelectedIndex(personenListe.getSelectedIndex());
+
+            }
+        };
+        personenListe.addMouseListener(mouseListener);
+
 
         //List
         personenPanel.setBorder(BorderFactory.createTitledBorder("Personen bearbeiten:"));

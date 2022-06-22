@@ -187,26 +187,25 @@ public class App {
       participation16.addTeam(app.randomTeam());
       person16.setParticipation(participation16);
 
-      department1.addMember(person1);
-      department1.addMember(person2);
-      department1.addMember(person3);
-      department1.addMember(person4);
+      person1.setDepartment(department1);
+      person2.setDepartment(department1);
+      person3.setDepartment(department1);
+      person4.setDepartment(department1);
 
-      department1.addMember(person5);
-      department1.addMember(person6);
-      department1.addMember(person7);
-      department1.addMember(person8);
+      person5.setDepartment(department2);
+      person6.setDepartment(department2);
+      person7.setDepartment(department2);
+      person8.setDepartment(department2);
 
-      department1.addMember(person9);
-      department1.addMember(person10);
-      department1.addMember(person11);
-      department1.addMember(person12);
+      person9.setDepartment(department3);
+      person10.setDepartment(department3);
+      person11.setDepartment(department3);
+      person12.setDepartment(department3);
 
-      department1.addMember(person13);
-      department1.addMember(person14);
-      department1.addMember(person15);
-      department1.addMember(person16);
-
+      person13.setDepartment(department4);
+      person14.setDepartment(department4);
+      person15.setDepartment(department4);
+      person16.setDepartment(department4);
 
       company.addPerson(person1);
       company.addPerson(person2);
