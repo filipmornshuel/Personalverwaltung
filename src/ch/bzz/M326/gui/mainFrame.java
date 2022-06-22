@@ -3,6 +3,8 @@ package ch.bzz.M326.gui;
 import ch.bzz.M326.company.Company;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * Das MainFrame, indem alle Panes zueinanderfinden
@@ -17,15 +19,21 @@ public class mainFrame extends JFrame {
     private Personen personenTab;
     private Zuordnung zuordnungTab;
     private Uebersicht uebersichtTab;
+    private Authentifizierung authentifizierung;
+    private JFrame frame;
+    private int cnt = 1;
 
     /**
      * Konstruktor für das MainFrame
      */
     public mainFrame(Company company){
+
         setVisible(true);
         setResizable(false);
         setSize(700,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        this.frame = this;
         pane = new JTabbedPane();
         getContentPane().add(pane);
         uebersichtTab = new Uebersicht(pane, company);
@@ -33,5 +41,18 @@ public class mainFrame extends JFrame {
         personenTab = new Personen(pane, company);
         stammdatenTab = new Stammdaten(pane, company);
         logbuchTab = new Logbuch(pane, company);
+
+        pane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int temp = pane.getSelectedIndex();
+                cnt++;
+                if (cnt % 2 == 0){
+                    authentifizierung = new Authentifizierung(frame, company, pane);
+                }else {
+                    System.out.println("Morn Shuel");
+                }
+            }
+        });
     }
 }

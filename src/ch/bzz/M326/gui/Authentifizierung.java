@@ -23,17 +23,20 @@ public class Authentifizierung extends JDialog {
     private Company company;
     private int tries =1;
     private boolean correct;
+    private JFrame frame;
+    private JTabbedPane pane;
+    private int temp;
 
-    public Authentifizierung(JFrame frame, Company company){
+    public Authentifizierung(JFrame frame, Company company, JTabbedPane pane){
         super(frame,true);
         this.dialog = this;
         this.company = company;
+        this.frame = frame;
+        this.pane = pane;
         setTitle("Authentifizierung");
         createComponents();
         pack();
         setVisible(true);
-        //setModal(true);
-
     }
 
     public void createComponents(){
@@ -48,11 +51,13 @@ public class Authentifizierung extends JDialog {
         codeField = new JTextField("");
         persons = new JComboBox(authentificationFacade.getAllHRPeople());
 
+        temp = pane.getSelectedIndex();
+
         abort = new JButton("Abbrechen");
         abort.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new mainFrame(company);
+                pane.setSelectedIndex(0);
                 dispose();
             }
         });
@@ -62,16 +67,16 @@ public class Authentifizierung extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 if (tries<= 2){
                     if (password.equals(codeField.getText())){
-                            correct = true;
-                            dispose();
+                        pane.setSelectedIndex(temp);
+                        correct = true;
+                        dispose();
                     }else {
                         tries++;
                     }
                 }else {
+                    pane.setSelectedIndex(0);
                     correct = false;
-                    new mainFrame(company);
                     dispose();
-
                 }
             }
         });
