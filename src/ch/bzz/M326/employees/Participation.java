@@ -36,6 +36,7 @@ public class Participation {
      */
     public void addFunction(String jobFunction){
         this.functions.addJobFunction(jobFunction);
+        owner.setJobfunction(jobFunction);
     }
 
     /**
@@ -69,6 +70,7 @@ public class Participation {
      */
     public void addTeam(String team){
         teams.addTeam(team);
+        owner.setTeam(team);
     }
 
     /**

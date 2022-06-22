@@ -187,6 +187,7 @@ public class App {
       participation16.addTeam(app.randomTeam());
       person16.setParticipation(participation16);
 
+
       person1.setDepartment(department1);
       person2.setDepartment(department1);
       person3.setDepartment(department1);

@@ -133,10 +133,10 @@ public class Zuordnung extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 field.setText(personenListe.getSelectedValue());
                 System.out.println((personenListe.getSelectedValue()));
+                System.out.println(zuordnungFacade.getPersonByName(personenListe.getSelectedValue()).getJobfunction());
                 abteilungsField.setText(zuordnungFacade.getDepartment(zuordnungFacade.getPersonByName(personenListe.getSelectedValue())));
-                funktionenBox.setSelectedIndex(personenListe.getSelectedIndex());
-                teamsBox.setSelectedIndex(personenListe.getSelectedIndex());
-
+                funktionenBox.setSelectedItem(zuordnungFacade.getPersonByName(personenListe.getSelectedValue()).getJobfunction());
+                teamsBox.setSelectedItem(zuordnungFacade.getPersonByName(personenListe.getSelectedValue()).getTeam());
             }
         };
         personenListe.addMouseListener(mouseListener);
