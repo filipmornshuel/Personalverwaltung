@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Unsere Uebersicht-GUI für das Programm
+ */
 public class Uebersicht extends JPanel {
     /**
      * Komponenten für das Erzeugen des GUIs
