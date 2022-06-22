@@ -66,6 +66,7 @@ public class Stammdaten extends JPanel {
         springLayout = new SpringLayout();
         firma = new JLabel("Firma:");
         firmaField = new JTextField(company.getCompanyName());
+        firmaField.setEditable(false);
         firmaPanel = new JPanel();
         firmaPanel.setLayout(springLayout);
 

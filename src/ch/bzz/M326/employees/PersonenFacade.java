@@ -49,6 +49,26 @@ public class PersonenFacade {
    }
 
    /**
+    * spilts name into last name
+    * @param name
+    * @return
+    */
+   public String getLastName(String name){
+      String[] names = name.split(" ");
+      return names[1];
+   }
+
+   /**
+    * spilts name into first name
+    * @param name
+    * @return
+    */
+   public String getFirstName(String name){
+      String[] names = name.split(" ");
+      return names[0];
+   }
+
+   /**
     * removes a person
     * @param person
     */

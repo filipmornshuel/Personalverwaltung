@@ -1,6 +1,7 @@
 package ch.bzz.M326.gui;
 
 import ch.bzz.M326.company.Company;
+import ch.bzz.M326.employees.Person;
 import ch.bzz.M326.employees.PersonErfassenFacade;
 import ch.bzz.M326.employees.PersonenFacade;
 
@@ -46,6 +47,7 @@ public class Personen extends JPanel {
     private JCheckBox adminstrator;
 
     private Company company;
+    DefaultListModel<String> modelPersonen;
 
     /**
      * Constructor to run the createPersonenComponents-Method and initializePanels-Method
@@ -91,6 +93,11 @@ public class Personen extends JPanel {
         //Facade
         PersonenFacade facade = new PersonenFacade(company);
 
+        modelPersonen = new DefaultListModel<>();
+        for (int i = 0; i < company.getPeople().size(); i++) {
+            modelPersonen.addElement(company.getPeople().get(i).getFristName() + " " + company.getPeople().get(i).getLastName());
+        }
+
         //Components
         name = new JLabel("Name: ");
         field = new JTextField(facade.getName(company.getPeople().get(0)));
@@ -110,7 +117,7 @@ public class Personen extends JPanel {
 
         //List
         personenListe = new JList<>();
-        personenListe = new JList(facade.getMitarbeiterNameListe().toArray());
+        personenListe = new JList(modelPersonen);
         uebersicht = new JLabel("Übersicht");
 
         //List
@@ -124,7 +131,7 @@ public class Personen extends JPanel {
         create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreatePersonDialog("Person erfassen", company);
+                new CreatePersonDialog("Person erfassen", company, facade, modelPersonen);
             }
         });
 
@@ -132,7 +139,8 @@ public class Personen extends JPanel {
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                facade.removePerson(facade.getMitarbeiterListe().get(personenListe.getSelectedIndex()));
+                modelPersonen.removeElement(personenListe.getSelectedValue());
             }
         });
         personenListButtonsPanel.add(bearbeiten);
@@ -220,8 +228,8 @@ class CreatePersonDialog extends JDialog{
      * @param text parameter to set the name
      * @param company paramter to set the company
      */
-    CreatePersonDialog(String text, Company company){
-        PersonErfassenFacade facade = new PersonErfassenFacade(company);
+    CreatePersonDialog(String text, Company company, PersonenFacade personenFacade,DefaultListModel<String> model){
+        PersonErfassenFacade personErfassenFacade = new PersonErfassenFacade(company);
         this.company = company;
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
@@ -229,7 +237,7 @@ class CreatePersonDialog extends JDialog{
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         name = new JLabel("Name: ");
-        field = new JTextField(facade.getName(company.getPeople().get(0)));
+        field = new JTextField(personErfassenFacade.getName(company.getPeople().get(0)));
         foto = new JLabel("Foto: ");
         imageIcon = new ImageIcon("src/pic.png");
         bild = new JLabel(imageIcon);
@@ -241,7 +249,11 @@ class CreatePersonDialog extends JDialog{
         speichernButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String firstname = personenFacade.getFirstName(field.getText());
+                String lastname =  personenFacade.getLastName(field.getText());
+                Person person = new Person(firstname, lastname, new ImageIcon("pic.png"));
+                personenFacade.addPerson(person);
+                model.addElement(field.getText());
                 dialog.dispose();
             }
         });
