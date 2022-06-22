@@ -7,8 +7,7 @@ import ch.bzz.M326.employees.PersonenFacade;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -97,11 +96,10 @@ public class Personen extends JPanel {
         for (int i = 0; i < company.getPeople().size(); i++) {
             modelPersonen.addElement(company.getPeople().get(i).getFristName() + " " + company.getPeople().get(i).getLastName());
         }
-
         //Components
         name = new JLabel("Name: ");
-        field = new JTextField(facade.getName(company.getPeople().get(0)));
         platzhalter = new JLabel();
+        field = new JTextField(facade.getName(company.getPeople().get(0)));
         bild = new JLabel();
         imageIcon = new ImageIcon("src/pic.png");
         bild.setIcon(imageIcon);
@@ -118,6 +116,15 @@ public class Personen extends JPanel {
         //List
         personenListe = new JList<>();
         personenListe = new JList(modelPersonen);
+        MouseListener mouseListener = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                field.setText(personenListe.getSelectedValue());
+
+            }
+        };
+        personenListe.addMouseListener(mouseListener);
+
         uebersicht = new JLabel("Übersicht");
 
         //List
@@ -135,7 +142,6 @@ public class Personen extends JPanel {
             }
         });
 
-        //Hello Worlds
 
         personenListButtonsPanel.add(delete);
         delete.addActionListener(new ActionListener() {
@@ -149,7 +155,7 @@ public class Personen extends JPanel {
         bearbeiten.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new UpdatePersonDialog("Person bearbeiten", company, facade, modelPersonen, personenListe);
             }
         });
 
@@ -198,7 +204,17 @@ public class Personen extends JPanel {
         personenPanel.add(personenListPanel, BorderLayout.WEST);
         personenPanel.add(personenDetailPanel, BorderLayout.CENTER);
     }
+    public String getVALUE(JList list, PersonenFacade facade){
+        if(list.getSelectedValue() == null){
+            return facade.getName(company.getPeople().get(0));
+        }
+        else{
+            return facade.getMitarbeiterNameListe().get(list.getSelectedIndex());
+        }
+    }
 }
+
+
 
 /**
  * Inner Class to create a new person
@@ -239,7 +255,7 @@ class CreatePersonDialog extends JDialog{
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         name = new JLabel("Name: ");
-        field = new JTextField(personErfassenFacade.getName(company.getPeople().get(0)));
+        field = new JTextField();
         foto = new JLabel("Foto: ");
         imageIcon = new ImageIcon("src/pic.png");
         bild = new JLabel(imageIcon);
@@ -256,6 +272,118 @@ class CreatePersonDialog extends JDialog{
                 Person person = new Person(firstname, lastname, new ImageIcon("pic.png"));
                 personenFacade.addPerson(person);
                 model.addElement(field.getText());
+                dialog.dispose();
+            }
+        });
+        abortBtn = new JButton("Abbrechen");
+        abortBtn.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                dialog.dispose();
+            }
+        });
+
+        personenDetailPanel = new JPanel(new BorderLayout());
+        personenDetailBildMainPanel = new JPanel(new BorderLayout());
+
+        personenDetailBildNebenPanel = new JPanel();
+        personenDetailBildNebenPanel.setLayout(new BoxLayout(personenDetailBildNebenPanel, BoxLayout.PAGE_AXIS));
+
+        personenDetailBildPanel = new JPanel();
+        personenDetailBildPanel.setLayout(new BoxLayout(personenDetailBildPanel, BoxLayout.PAGE_AXIS));
+
+        personenDetailRollenPanel = new JPanel();
+        personenDetailRollenPanel.setLayout(new GridBagLayout());
+        gridBagConstraints = new GridBagConstraints();
+
+        personenDetailBildPanel.add(field);
+        personenDetailBildPanel.add(bild);
+
+        personenDetailBildNebenPanel.add(name);
+        personenDetailBildNebenPanel.add(foto);
+
+        personenDetailBildMainPanel.add(personenDetailBildPanel, BorderLayout.CENTER);
+        personenDetailBildMainPanel.add(personenDetailBildNebenPanel, BorderLayout.WEST);
+        personenDetailBildMainPanel.add(new JSeparator(), BorderLayout.SOUTH);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        personenDetailRollenPanel.add(hrM, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        personenDetailRollenPanel.add(adminstrator, gridBagConstraints);
+
+        personenDetailPanel.add(personenDetailBildMainPanel, BorderLayout.CENTER);
+        personenDetailPanel.add(personenDetailRollenPanel, BorderLayout.SOUTH);
+        this.getContentPane().add(personenDetailPanel, BorderLayout.CENTER);
+
+        JPanel btnPanel = new JPanel(new GridLayout(1,2));
+        btnPanel.add(abortBtn);
+        btnPanel.add(speichernButton);
+        this.getContentPane().add(btnPanel, BorderLayout.SOUTH);
+        pack();
+        setVisible(true);
+    }
+}
+
+
+/**
+ * Inner Class to update a person
+ */
+class UpdatePersonDialog extends JDialog{
+    /**
+     * Components for JDialog
+     */
+    private JPanel personenDetailPanel;
+    private JPanel personenDetailBildMainPanel;
+    private JPanel personenDetailBildNebenPanel;
+    private JPanel personenDetailBildPanel;
+    private JPanel personenDetailRollenPanel;
+    private GridBagConstraints gridBagConstraints;
+    private JLabel name;
+    private JTextField field;
+    private JLabel foto;
+    private JLabel bild;
+    private ImageIcon imageIcon;
+    private JCheckBox hrM;
+    private JCheckBox adminstrator;
+    private JDialog dialog;
+    private JButton speichernButton, abortBtn;
+
+    private Company company;
+
+    /**
+     * Constructor to initialize all components and adding to the panels
+     * @param text parameter to set the name
+     * @param company paramter to set the company
+     */
+    UpdatePersonDialog(String text, Company company, PersonenFacade personenFacade,DefaultListModel<String> model, JList list){
+        PersonErfassenFacade personErfassenFacade = new PersonErfassenFacade(company);
+        this.company = company;
+        this.getContentPane().setLayout(new BorderLayout());
+        this.dialog = this;
+        this.setTitle(text + " erfassen");
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        name = new JLabel("Name: ");
+        field = new JTextField(personenFacade.getMitarbeiterNameListe().get(list.getSelectedIndex()));
+        foto = new JLabel("Foto: ");
+        imageIcon = new ImageIcon("src/pic.png");
+        bild = new JLabel(imageIcon);
+        adminstrator = new JCheckBox("Administrator");
+        hrM = new JCheckBox("HR-Mitarbeiter");
+
+        //Ok Listener, Verarbeitung des Buttons
+        speichernButton = new JButton("Speichern");
+        speichernButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String firstname = personenFacade.getFirstName(field.getText());
+                String lastname =  personenFacade.getLastName(field.getText());
+                personenFacade.updatePerson(personenFacade.getMitarbeiterListe().get(list.getSelectedIndex()), firstname, lastname);
+                model.set(list.getSelectedIndex(), field.getText());
                 dialog.dispose();
             }
         });

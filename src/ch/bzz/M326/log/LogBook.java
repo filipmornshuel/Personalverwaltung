@@ -55,6 +55,14 @@ public class LogBook {
     }
 
     /**
+     * returns all entries in the logbook
+     * @return
+     */
+    public Vector<String> getEntries() {
+        return entries;
+    }
+
+    /**
      * add entry if writing the file is enable
      * @param entry
      */

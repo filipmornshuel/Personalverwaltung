@@ -38,7 +38,7 @@ public class HRPerson extends Person {
      */
     public void change(Person person, int modus){
         if (this.modus == modus){
-            System.out.println("This person already has this modus");
+            System.out.println("This person a   lready has this modus");
 
         }else {
             this.modus = modus;
