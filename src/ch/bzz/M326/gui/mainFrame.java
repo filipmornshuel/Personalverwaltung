@@ -45,12 +45,8 @@ public class mainFrame extends JFrame {
         pane.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                int temp = pane.getSelectedIndex();
-                cnt++;
-                if (cnt % 2 == 0){
+                if (pane.getSelectedIndex() != 0){
                     authentifizierung = new Authentifizierung(frame, company, pane);
-                }else {
-                    System.out.println("Morn Shuel");
                 }
             }
         });
