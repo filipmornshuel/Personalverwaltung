@@ -205,7 +205,7 @@ public class Uebersicht extends JPanel {
         field.setColumns(20);
         personenDetailBildPanel.add(field);
 
-        springLayout.putConstraint(SpringLayout.EAST, bild, 220, SpringLayout.WEST, personenDetailBildPanel);
+        springLayout.putConstraint(SpringLayout.EAST, bild, 288, SpringLayout.WEST, personenDetailBildPanel);
         springLayout.putConstraint(SpringLayout.NORTH, bild, 20, SpringLayout.NORTH, personenDetailBildPanel);
         personenDetailBildPanel.add(bild);
 

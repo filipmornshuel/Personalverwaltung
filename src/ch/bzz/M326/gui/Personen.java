@@ -167,7 +167,7 @@ public class Personen extends JPanel {
         personenDetailBildPanel.add(field);
 
         //With SpringLayout
-        springLayout.putConstraint(SpringLayout.EAST, bild, 280, SpringLayout.WEST, personenDetailBildPanel);
+        springLayout.putConstraint(SpringLayout.EAST, bild, 320, SpringLayout.WEST, personenDetailBildPanel);
         springLayout.putConstraint(SpringLayout.NORTH, bild, 50, SpringLayout.NORTH, personenDetailBildPanel);
         personenDetailBildPanel.add(bild);
 
