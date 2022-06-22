@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Testing different functions of the facades
@@ -146,6 +147,56 @@ public class Test {
       personErfassenFacade.setName(person, "Max Mustermann");
       assertEquals(personErfassenFacade.getName(person), "Max Mustermann");
    }
+
+   @org.junit.Test
+   public void test11(){
+      Team team = new Team("Teams");
+      team.addTeam("Informatiker");
+      company.setTeams(team);
+      stammdatenFacade = new StammdatenFacade(company);
+      stammdatenFacade.updateTeam("Informatiker", "Mediamatiker");
+      assertEquals(stammdatenFacade.getAllTeams().get(0), "Mediamatiker");
+   }
+
+   @org.junit.Test
+   public void test12(){
+      Department department = new Department("Finance");
+      company.addDepartment(department);
+      stammdatenFacade = new StammdatenFacade(company);
+      stammdatenFacade.updateDepartment("Finance", "Analysis");
+      assertEquals(stammdatenFacade.getAllDepartments().get(0), "Analysis");
+   }
+
+   @org.junit.Test
+   public void test13(){
+      Department department = new Department("Finance");
+      company.addDepartment(department);
+      stammdatenFacade = new StammdatenFacade(company);
+      stammdatenFacade.deleteDepartment("Finance");
+      assertEquals(stammdatenFacade.getAllDepartments().size(), 0);
+   }
+
+   @org.junit.Test
+   public void test14(){
+      Team team = new Team("Team");
+      team.addTeam("T1");
+      company.setTeams(team);
+      stammdatenFacade = new StammdatenFacade(company);
+      stammdatenFacade.deleteTeam("T1");
+      assertEquals(stammdatenFacade.getAllTeams().size(), 0);
+   }
+
+   @org.junit.Test
+   public void test15(){
+      JobFunctions jobFunctions = new JobFunctions("Functions");
+      jobFunctions.addJobFunction("Informatiker");
+      company.setJobFunctions(jobFunctions);
+      stammdatenFacade = new StammdatenFacade(company);
+      stammdatenFacade.deleteFunction("Informatiker");
+      assertEquals(stammdatenFacade.getAllJobFunctions().size(), 0);
+   }
+
+
 }
 
 
