@@ -5,9 +5,7 @@ import ch.bzz.M326.employees.ZuordnungFacade;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -113,9 +111,34 @@ public class Zuordnung extends JPanel {
         teamsListe.add("Team wählen");
 
         funktionenBox = new JComboBox(zuordnungFacade.getAllJobFunctions().toArray());
+        class ItemChangeListenerFunktion implements ItemListener {
+            @Override
+            public void itemStateChanged(ItemEvent event) {
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+                    String item = event.getItem().toString();
+                    zuordnungFacade.getPersonByName(personenListe.getSelectedValue()).setJobfunction(item);
+                    System.out.println(zuordnungFacade.getPersonByName(personenListe.getSelectedValue()).getJobfunction());
+                }
+            }
+        }
+        funktionenBox.addItemListener(new ItemChangeListenerFunktion());
         funktionenBox.setSelectedItem(zuordnungFacade.getMitarbeiterNameListe().get(0));
+
+
         teamsBox = new JComboBox(zuordnungFacade.getAllTeams().toArray());
+        class ItemChangeListenerTeam implements ItemListener {
+            @Override
+            public void itemStateChanged(ItemEvent event) {
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+                    String item = event.getItem().toString();
+                    zuordnungFacade.getPersonByName(personenListe.getSelectedValue()).setTeam(item);
+                    System.out.println(zuordnungFacade.getPersonByName(personenListe.getSelectedValue()).getTeam());
+                }
+            }
+        }
+        teamsBox.addItemListener(new ItemChangeListenerTeam());
         teamsBox.setSelectedItem(zuordnungFacade.getMitarbeiterNameListe().get(0));
+
 
         model = new DefaultListModel<>();
         for (int i = 0; i < zuordnungFacade.getMitarbeiterNameListe().size(); i++) {
