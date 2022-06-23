@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class Zuordnung extends JPanel {
     private JTabbedPane pane;
-    private JLabel übersicht;
+    private JLabel uebersicht;
     private JList<String> personenListe;
     private ArrayList<String> personen;
     private JPanel personenPanel;
@@ -148,7 +148,7 @@ public class Zuordnung extends JPanel {
         //Components
         personenListe = new JList<>();
         personenListe = new JList(model);
-        übersicht = new JLabel("Übersicht");
+        uebersicht = new JLabel("Uebersicht");
         personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
         MouseListener mouseListener = new MouseAdapter() {
             @Override
@@ -168,7 +168,7 @@ public class Zuordnung extends JPanel {
         personenPanel.setBorder(BorderFactory.createTitledBorder("Personen bearbeiten:"));
 
         personenListPanel.add(personenScrollPane, BorderLayout.CENTER);
-        personenListPanel.add(übersicht, BorderLayout.NORTH);
+        personenListPanel.add(uebersicht, BorderLayout.NORTH);
 
 
         //DetailPanel

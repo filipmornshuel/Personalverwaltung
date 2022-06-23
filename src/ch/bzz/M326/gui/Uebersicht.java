@@ -1,8 +1,6 @@
 package ch.bzz.M326.gui;
 
-import ch.bzz.M326.company.Company;
 import ch.bzz.M326.employees.UebersichtFacade;
-import ch.bzz.M326.employees.ZuordnungFacade;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,19 +9,19 @@ import java.util.*;
 
 
 /**
- * Our Übersicht-GUI
+ * Our Uebersicht-GUI
  * @author Filip Slavkovic
  * @since 2022-06-22
  * @version 1.0
  */
 public class Uebersicht extends JPanel {
     /**
-     * Komponenten für das Erzeugen des GUIs
+     * Komponenten fuer das Erzeugen des GUIs
      */
     private Vector<String> abiszList;
     private Vector<String> zbisaList;
     private JTabbedPane pane;
-    private JLabel übersicht;
+    private JLabel uebersicht;
     private JList<String> personenListe;
     private JPanel personenPanel;
     private JPanel personenListPanel;
@@ -86,14 +84,14 @@ public class Uebersicht extends JPanel {
     private UebersichtFacade uebersichtFacade;
 
     /**
-     * Konstruktor für das Aufrufen der createZurodnungComponents-Methode
+     * Konstruktor fuer das Aufrufen der createZurodnungComponents-Methode
      * @param pane Weitergabe des JTabbedPanes
      */
     public Uebersicht(JTabbedPane pane, UebersichtFacade uebersichtFacade){
         this.pane = pane;
         this.uebersichtFacade = uebersichtFacade;
         createZuordnungComponents();
-        pane.addTab("Übersicht", mainPanel);
+        pane.addTab("Uebersicht", mainPanel);
 
     }
 
@@ -158,7 +156,7 @@ public class Uebersicht extends JPanel {
         personenPanel.setBorder(BorderFactory.createTitledBorder("Personen:"));
         personenListe = new JList<>();
 
-        übersicht = new JLabel("Übersicht");
+        uebersicht = new JLabel("Uebersicht");
         Vector<String> persons = new Vector(Arrays.asList(uebersichtFacade.getMitarbeiterNameListe().toArray()));
         Vector<String> oldPersons = new Vector(Arrays.asList(uebersichtFacade.getMitarbeiterNameListe().toArray()));
         personenListe = new JList(persons.toArray());
@@ -175,7 +173,7 @@ public class Uebersicht extends JPanel {
         });
         personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
         personenListPanel.add(personenScrollPane, BorderLayout.CENTER);
-        personenListPanel.add(übersicht, BorderLayout.NORTH);
+        personenListPanel.add(uebersicht, BorderLayout.NORTH);
         personenListPanel.add(personenSuchPanel, BorderLayout.SOUTH);
         personenSuchPanel.add(personenSuchEingabePanel, BorderLayout.SOUTH);
         personenSuchPanel.add(personenSuchButtonPanel, BorderLayout.NORTH);

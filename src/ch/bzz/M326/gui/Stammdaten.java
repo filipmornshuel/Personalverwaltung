@@ -1,6 +1,5 @@
 package ch.bzz.M326.gui;
 
-import ch.bzz.M326.company.Department;
 import ch.bzz.M326.company.StammdatenFacade;
 
 import javax.swing.*;
@@ -9,10 +8,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * Our StammDaten-GUI
@@ -40,9 +36,9 @@ public class Stammdaten extends JPanel {
     private JButton funktionBearbeiten;
     private JButton teamBearbeiten;
 
-    private JButton abteilungLöschen;
-    private JButton funktionLöschen;
-    private JButton teamLöschen;
+    private JButton abteulungloeschen;
+    private JButton funktionLoeschen;
+    private JButton teamLoeschen;
 
     private JScrollPane abteilungScrollPane;
     private ArrayList<String> texts;
@@ -129,8 +125,8 @@ public class Stammdaten extends JPanel {
         switch (value){
             case 1:
                 abteilungsListe = new JList(modelAbteilung);
-                abteilungLöschen = new JButton("Delete");
-                abteilungLöschen.setEnabled(false);
+                abteulungloeschen = new JButton("Delete");
+                abteulungloeschen.setEnabled(false);
                 abteilungBearbeiten = new JButton("Edit");
                 abteilungBearbeiten.setEnabled(false);
                 abteilungsListe.addListSelectionListener(new ListSelectionListener() {
@@ -138,10 +134,10 @@ public class Stammdaten extends JPanel {
                     public void valueChanged(ListSelectionEvent e) {
                         if(e.getValueIsAdjusting()){
                             if (abteilungsListe.getSelectedValue() != null) {
-                                abteilungLöschen.setEnabled(true);
+                                abteulungloeschen.setEnabled(true);
                                 abteilungBearbeiten.setEnabled(true);
                             } else {
-                                abteilungLöschen.setEnabled(false);
+                                abteulungloeschen.setEnabled(false);
                                 abteilungBearbeiten.setEnabled(false);
                             }
                         }
@@ -151,19 +147,20 @@ public class Stammdaten extends JPanel {
                 break;
             case 2:
                 funktionsListe = new JList(modelFunktion);
-                funktionLöschen = new JButton("Delete");
-                funktionLöschen.setEnabled(false);
+                funktionLoeschen = new JButton("Delete");
+                funktionLoeschen.setEnabled(false);
                 funktionBearbeiten = new JButton("Edit");
                 funktionBearbeiten.setEnabled(false);
                 funktionsListe.addListSelectionListener(new ListSelectionListener() {
                     @Override
                     public void valueChanged(ListSelectionEvent e) {
                         if(e.getValueIsAdjusting()){
+
                             if(funktionsListe.getSelectedValue() != null){
-                                funktionLöschen.setEnabled(true);
+                                funktionLoeschen.setEnabled(true);
                                 funktionBearbeiten.setEnabled(true);
                             }else{
-                                funktionLöschen.setEnabled(false);
+                                funktionLoeschen.setEnabled(false);
                                 funktionBearbeiten.setEnabled(false);
                             }
                         }
@@ -173,8 +170,8 @@ public class Stammdaten extends JPanel {
                 break;
             case 3:
                 teamsListe = new JList(modelTeam);
-                teamLöschen = new JButton("Delete");
-                teamLöschen.setEnabled(false);
+                teamLoeschen = new JButton("Delete");
+                teamLoeschen.setEnabled(false);
                 teamBearbeiten = new JButton("Edit");
                 teamBearbeiten.setEnabled(false);
                 teamsListe.addListSelectionListener(new ListSelectionListener() {
@@ -182,10 +179,10 @@ public class Stammdaten extends JPanel {
                     public void valueChanged(ListSelectionEvent e) {
                         if(e.getValueIsAdjusting()){
                             if (teamsListe.getSelectedValue() != null) {
-                                teamLöschen.setEnabled(true);
+                                teamLoeschen.setEnabled(true);
                                 teamBearbeiten.setEnabled(true);
                             } else {
-                                teamLöschen.setEnabled(false);
+                                teamLoeschen.setEnabled(false);
                                 teamBearbeiten.setEnabled(false);
                             }
                         }
@@ -214,19 +211,19 @@ public class Stammdaten extends JPanel {
                         stammdatenFacade.universalDelete(name, abteilungsListe.getSelectedValue());
                         modelAbteilung.removeElement(abteilungsListe.getSelectedValue());
                         abteilungBearbeiten.setEnabled(false);
-                        abteilungLöschen.setEnabled(false);
+                        abteulungloeschen.setEnabled(false);
                         break;
                     case 2:
                         stammdatenFacade.universalDelete(name, funktionsListe.getSelectedValue());
                         modelFunktion.removeElement(funktionsListe.getSelectedValue());
                         funktionBearbeiten.setEnabled(false);
-                        funktionLöschen.setEnabled(false);
+                        funktionLoeschen.setEnabled(false);
                         break;
                     case 3:
                         stammdatenFacade.universalDelete(name, teamsListe.getSelectedValue());
                         modelTeam.removeElement(teamsListe.getSelectedValue());
                         teamBearbeiten.setEnabled(false);
-                        teamLöschen.setEnabled(false);
+                        teamLoeschen.setEnabled(false);
                         break;
                 }
                 if(getJlist(value).getModel().getSize() == 0){
@@ -270,11 +267,11 @@ public class Stammdaten extends JPanel {
     public JButton getDeleteButton(int value){
         switch (value){
             case 1:
-                return abteilungLöschen;
+                return abteulungloeschen;
             case 2:
-                return funktionLöschen;
+                return funktionLoeschen;
             case 3:
-                return teamLöschen;
+                return teamLoeschen;
             default:
                 return null;
         }
@@ -343,7 +340,7 @@ class CreateDialog extends JDialog{
                     stammdatenFacade.universalAdd(text, temp);
                     model.addElement(temp);
                 }else{
-                    JOptionPane.showMessageDialog(null, "Die Eingabe ist leer, füllen Sie bitte das Feld aus", "Field is empty!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Die Eingabe ist leer, fuellen Sie bitte das Feld aus", "Field is empty!", JOptionPane.ERROR_MESSAGE);
                     new CreateDialog(text, stammdatenFacade, model, edit, delete);
                 }
                 if(model.getSize() > 0){
@@ -406,7 +403,7 @@ class UpdateDialog extends JDialog{
                     model.set(jList.getSelectedIndex(), temp);
                     jList.clearSelection();
                 }else{
-                    JOptionPane.showMessageDialog(null, "Die Eingabe ist leer, füllen Sie bitte das Feld aus", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Die Eingabe ist leer, fuellen Sie bitte das Feld aus", "Error", JOptionPane.ERROR_MESSAGE);
                     new UpdateDialog(text, stammdatenFacade, value, jList, model, edit, delete);
                 }
                 edit.setEnabled(false);
