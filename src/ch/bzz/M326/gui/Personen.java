@@ -45,17 +45,19 @@ public class Personen extends JPanel {
     private JCheckBox hrM;
     private JCheckBox adminstrator;
 
-    private Company company;
+    private PersonenFacade personenFacade;
+    private PersonErfassenFacade personErfassenFacade;
     DefaultListModel<String> modelPersonen;
 
     /**
      * Constructor to run the createPersonenComponents-Method and initializePanels-Method
      * @param pane to set the JTabbedPane
-     * @param company to set the company
+     * @param personenFacade to set the facade
      */
-    public Personen(JTabbedPane pane, Company company){
+    public Personen(JTabbedPane pane, PersonenFacade personenFacade, PersonErfassenFacade personErfassenFacade){
         this.pane = pane;
-        this.company = company;
+        this.personenFacade = personenFacade;
+        this.personErfassenFacade = personErfassenFacade;
         initializePanels();
         createPersonenComponents();
         pane.addTab("Personen", personenPanel);
@@ -89,17 +91,15 @@ public class Personen extends JPanel {
      * Method to initialize all components and adding to the panels
      */
     public void createPersonenComponents(){
-        //Facade
-        PersonenFacade facade = new PersonenFacade(company);
 
         modelPersonen = new DefaultListModel<>();
-        for (int i = 0; i < company.getPeople().size(); i++) {
-            modelPersonen.addElement(company.getPeople().get(i).getFristName() + " " + company.getPeople().get(i).getLastName());
+        for (int i = 0; i < personenFacade.getMitarbeiterListe().size(); i++) {
+            modelPersonen.addElement(personenFacade.getMitarbeiterNameListe().get(i));
         }
         //Components
         name = new JLabel("Name: ");
         platzhalter = new JLabel();
-        field = new JTextField(facade.getName(company.getPeople().get(0)));
+        field = new JTextField(personenFacade.getMitarbeiterNameListe().get(0));
         bild = new JLabel();
         imageIcon = new ImageIcon("src/pic.png");
         bild.setIcon(imageIcon);
@@ -139,7 +139,7 @@ public class Personen extends JPanel {
         create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreatePersonDialog("Person erfassen", company, facade, modelPersonen);
+                new CreatePersonDialog("Person erfassen", personenFacade, modelPersonen, personErfassenFacade);
             }
         });
 
@@ -148,7 +148,7 @@ public class Personen extends JPanel {
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                facade.removePerson(facade.getMitarbeiterListe().get(personenListe.getSelectedIndex()));
+                personenFacade.removePerson(personenFacade.getMitarbeiterListe().get(personenListe.getSelectedIndex()));
                 modelPersonen.removeElement(personenListe.getSelectedValue());
             }
         });
@@ -156,7 +156,7 @@ public class Personen extends JPanel {
         bearbeiten.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new UpdatePersonDialog("Person bearbeiten", company, facade, modelPersonen, personenListe);
+                new UpdatePersonDialog("Person bearbeiten", personenFacade, modelPersonen, personenListe, personErfassenFacade);
             }
         });
 
@@ -207,7 +207,7 @@ public class Personen extends JPanel {
     }
     public String getVALUE(JList list, PersonenFacade facade){
         if(list.getSelectedValue() == null){
-            return facade.getName(company.getPeople().get(0));
+            return facade.getName(facade.getMitarbeiterListe().get(0));
         }
         else{
             return facade.getMitarbeiterNameListe().get(list.getSelectedIndex());
@@ -237,16 +237,15 @@ class CreatePersonDialog extends JDialog{
     private JDialog dialog;
     private JButton speichernButton, abortBtn;
 
-    private Company company;
+    private PersonErfassenFacade personErfassenFacade;
 
     /**
      * Constructor to initialize all components and adding to the panels
      * @param text parameter to set the name
-     * @param company paramter to set the company
+     * @param personErfassenFacade paramter to set the facade
      */
-    CreatePersonDialog(String text, Company company, PersonenFacade personenFacade,DefaultListModel<String> model){
-        PersonErfassenFacade personErfassenFacade = new PersonErfassenFacade(company);
-        this.company = company;
+    CreatePersonDialog(String text, PersonenFacade personenFacade,DefaultListModel<String> model, PersonErfassenFacade personErfassenFacade){
+        this.personErfassenFacade = personErfassenFacade;
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
         this.setTitle(text + " erfassen");
@@ -347,16 +346,17 @@ class UpdatePersonDialog extends JDialog{
     private JDialog dialog;
     private JButton speichernButton, abortBtn;
 
-    private Company company;
+    private PersonErfassenFacade personErfassenFacade;
 
     /**
      * Constructor to initialize all components and adding to the panels
      * @param text parameter to set the name
-     * @param company paramter to set the company
+     * @param personenFacade paramter to set the Personen-facade
+     * @param model  parameter to set the model
+     * @param list parameter to set the list
      */
-    UpdatePersonDialog(String text, Company company, PersonenFacade personenFacade,DefaultListModel<String> model, JList list){
-        PersonErfassenFacade personErfassenFacade = new PersonErfassenFacade(company);
-        this.company = company;
+    UpdatePersonDialog(String text, PersonenFacade personenFacade,DefaultListModel<String> model, JList list, PersonErfassenFacade personErfassenFacade){
+        this.personErfassenFacade = personErfassenFacade;
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
         this.setTitle(text + " erfassen");

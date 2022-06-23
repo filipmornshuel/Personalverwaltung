@@ -1,6 +1,5 @@
 package ch.bzz.M326.gui;
 
-import ch.bzz.M326.company.Company;
 import ch.bzz.M326.company.Department;
 import ch.bzz.M326.company.StammdatenFacade;
 
@@ -49,7 +48,7 @@ public class Stammdaten extends JPanel {
     private ArrayList<String> texts;
     private JPanel abteilungsButton;
 
-    private Company company;
+    private StammdatenFacade stammdatenFacade;
 
     private DefaultListModel<String> modelFunktion;
     private DefaultListModel<String> modelTeam;
@@ -58,14 +57,11 @@ public class Stammdaten extends JPanel {
     /**
      * Constructor for initialize firma-components and calling up the initializePanels and createStammDatenComponents method
      * @param pane to set the JTabbedPane
-     * @param company to set the company
+     * @param stammdatenFacade to set the facade
      */
-    public Stammdaten(JTabbedPane pane, Company company){
-
-        //Facade
-        StammdatenFacade facade = new StammdatenFacade(company);
+    public Stammdaten(JTabbedPane pane, StammdatenFacade stammdatenFacade){
         this.pane = pane;
-        this.company = company;
+        this.stammdatenFacade = stammdatenFacade;
 
         //Needed for the firmaPanel --> usually in the initializePanels methode
         stammDatenPanel = new JPanel(new GridLayout(4,1, 50,20));
@@ -73,7 +69,7 @@ public class Stammdaten extends JPanel {
         //SpringLayout
         springLayout = new SpringLayout();
         firma = new JLabel("Firma:");
-        firmaField = new JTextField(company.getCompanyName());
+        firmaField = new JTextField(stammdatenFacade.getFirmaName());
         firmaField.setEditable(false);
         firmaPanel = new JPanel();
         firmaPanel.setLayout(springLayout);
@@ -98,16 +94,16 @@ public class Stammdaten extends JPanel {
         stammDatenPanel.add(firmaPanel);
 
         modelFunktion = new DefaultListModel<>();
-        for (int i = 0; i < facade.getAllJobFunctions().size(); i++) {
-            modelFunktion.addElement(facade.getAllJobFunctions().get(i));
+        for (int i = 0; i < stammdatenFacade.getAllJobFunctions().size(); i++) {
+            modelFunktion.addElement(stammdatenFacade.getAllJobFunctions().get(i));
         }
         modelTeam = new DefaultListModel<>();
-        for (int i = 0; i < facade.getAllTeams().size(); i++) {
-            modelTeam.addElement(facade.getAllTeams().get(i));
+        for (int i = 0; i < stammdatenFacade.getAllTeams().size(); i++) {
+            modelTeam.addElement(stammdatenFacade.getAllTeams().get(i));
         }
         modelAbteilung = new DefaultListModel<>();
-        for (int i = 0; i < facade.getAllDepartments().size(); i++) {
-            modelAbteilung.addElement(facade.getAllDepartments().get(i));
+        for (int i = 0; i < stammdatenFacade.getAllDepartments().size(); i++) {
+            modelAbteilung.addElement(stammdatenFacade.getAllDepartments().get(i));
         }
 
         createStammdatenComponent("Abteilungen", modelAbteilung,1);
@@ -123,8 +119,6 @@ public class Stammdaten extends JPanel {
      * @param model to set the ListElements
      */
     public void createStammdatenComponent(String name, DefaultListModel<String> model, int value){
-        //Facade
-        StammdatenFacade facade = new StammdatenFacade(company);
 
         abteilungsButton = new JPanel(new GridLayout(1,3,5,5));
         abteilungsPanelBorder = new JPanel(new BorderLayout());
@@ -200,7 +194,6 @@ public class Stammdaten extends JPanel {
                 abteilungScrollPane = new JScrollPane(teamsListe, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 break;
             default:
-
                 break;
         }
 
@@ -209,7 +202,7 @@ public class Stammdaten extends JPanel {
         abteilungAdden.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CreateDialog createDialog = new CreateDialog(name, company, getListModel(value), getEditButton(value), getDeleteButton(value));
+                CreateDialog createDialog = new CreateDialog(name, stammdatenFacade, getListModel(value), getEditButton(value), getDeleteButton(value));
             }
         });
 
@@ -218,19 +211,19 @@ public class Stammdaten extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 switch (value){
                     case 1:
-                        facade.universalDelete(name, abteilungsListe.getSelectedValue());
+                        stammdatenFacade.universalDelete(name, abteilungsListe.getSelectedValue());
                         modelAbteilung.removeElement(abteilungsListe.getSelectedValue());
                         abteilungBearbeiten.setEnabled(false);
                         abteilungLöschen.setEnabled(false);
                         break;
                     case 2:
-                        facade.universalDelete(name, funktionsListe.getSelectedValue());
+                        stammdatenFacade.universalDelete(name, funktionsListe.getSelectedValue());
                         modelFunktion.removeElement(funktionsListe.getSelectedValue());
                         funktionBearbeiten.setEnabled(false);
                         funktionLöschen.setEnabled(false);
                         break;
                     case 3:
-                        facade.universalDelete(name, teamsListe.getSelectedValue());
+                        stammdatenFacade.universalDelete(name, teamsListe.getSelectedValue());
                         modelTeam.removeElement(teamsListe.getSelectedValue());
                         teamBearbeiten.setEnabled(false);
                         teamLöschen.setEnabled(false);
@@ -245,7 +238,7 @@ public class Stammdaten extends JPanel {
         getEditButton(value).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new UpdateDialog(name, company,value, getJlist(value), getListModel(value), getEditButton(value), getDeleteButton(value));
+                new UpdateDialog(name, stammdatenFacade, value, getJlist(value), getListModel(value), getEditButton(value), getDeleteButton(value));
             }
         });
 
@@ -327,11 +320,9 @@ class CreateDialog extends JDialog{
     /**
      * Constructor for intialize the components and adding to the panels for the JDialog
      * @param text to set the name
-     * @param company to set the company
+     * @param stammdatenFacade to set the facade
      */
-    CreateDialog(String text, Company company, DefaultListModel<String> model, JButton edit, JButton delete){
-        //Facade
-        StammdatenFacade facade = new StammdatenFacade(company);
+    CreateDialog(String text, StammdatenFacade stammdatenFacade, DefaultListModel<String> model, JButton edit, JButton delete){
 
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
@@ -348,8 +339,13 @@ class CreateDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 temp = eingabeFeld.getText();
-                facade.universalAdd(text, temp);
-                model.addElement(temp);
+                if(!temp.equals("")){
+                    stammdatenFacade.universalAdd(text, temp);
+                    model.addElement(temp);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Die Eingabe ist leer, füllen Sie bitte das Feld aus", "Field is empty!", JOptionPane.ERROR_MESSAGE);
+                    new CreateDialog(text, stammdatenFacade, model, edit, delete);
+                }
                 if(model.getSize() > 0){
                     edit.setEnabled(true);
                     delete.setEnabled(true);
@@ -387,11 +383,9 @@ class UpdateDialog extends JDialog{
     /**
      * Constructor for intialize the components and adding to the panels for the JDialog
      * @param text to set the name
-     * @param company to set the company
+     * @param stammdatenFacade to set the facade
      */
-    UpdateDialog(String text, Company company, int value, JList jList, DefaultListModel<String> model, JButton edit, JButton delete){
-        //Facade
-        StammdatenFacade facade = new StammdatenFacade(company);
+    UpdateDialog(String text, StammdatenFacade stammdatenFacade, int value, JList jList, DefaultListModel<String> model, JButton edit, JButton delete){
 
         this.getContentPane().setLayout(new BorderLayout());
         this.dialog = this;
@@ -407,8 +401,14 @@ class UpdateDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 temp = eingabeFeld.getText();
-                facade.universalUpdate(text, facade.universalGetList(text).get(jList.getSelectedIndex()),temp);
-                model.set(jList.getSelectedIndex(), temp);
+                if(!temp.equals("")){
+                    stammdatenFacade.universalUpdate(text, stammdatenFacade.universalGetList(text).get(jList.getSelectedIndex()), temp);
+                    model.set(jList.getSelectedIndex(), temp);
+                    jList.clearSelection();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Die Eingabe ist leer, füllen Sie bitte das Feld aus", "Error", JOptionPane.ERROR_MESSAGE);
+                    new UpdateDialog(text, stammdatenFacade, value, jList, model, edit, delete);
+                }
                 edit.setEnabled(false);
                 delete.setEnabled(false);
                 dialog.dispose();

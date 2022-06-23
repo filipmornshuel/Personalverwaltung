@@ -46,17 +46,17 @@ public class Zuordnung extends JPanel {
     private ArrayList<String> funktionenListe;
     private ArrayList<String> teamsListe;
 
-    private Company company;
+    private ZuordnungFacade zuordnungFacade;
     private DefaultListModel<String> model;
 
     /**
      * Constructor for calling up the initalizePanels and createZurodnungComponents methods
      * @param pane to set the JTabbedPane
-     * @param company to set the company
+     * @param zuordnungFacade to set the facade
      */
-    public Zuordnung(JTabbedPane pane, Company company){
+    public Zuordnung(JTabbedPane pane, ZuordnungFacade zuordnungFacade){
         this.pane = pane;
-        this.company = company;
+        this.zuordnungFacade = zuordnungFacade;
         initializePanels();
         createZuordnungComponents();
         pane.addTab("Zuordnung", personenPanel);
@@ -91,8 +91,7 @@ public class Zuordnung extends JPanel {
     public void createZuordnungComponents(){
 
         //Facade
-        ZuordnungFacade zuordnungFacade = new ZuordnungFacade(company);
-        field = new JTextField(zuordnungFacade.getName(company.getPeople().get(0)));
+        field = new JTextField(zuordnungFacade.getName(zuordnungFacade.getMitarbeiterListe().get(0)));
 
         name = new JLabel("Name: ");
         field.setEditable(false);

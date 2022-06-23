@@ -1,26 +1,32 @@
 package ch.bzz.M326.gui;
 
 import ch.bzz.M326.company.Company;
+import ch.bzz.M326.employees.UebersichtFacade;
 import ch.bzz.M326.employees.ZuordnungFacade;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.*;
+
 
 /**
- * Our Uebersicht-GUI
- * @author Isuf Hasani
- * @since 2022-06-20
+ * Our Übersicht-GUI
+ * @author Filip Slavkovic
+ * @since 2022-06-22
  * @version 1.0
  */
 public class Uebersicht extends JPanel {
+    /**
+     * Komponenten für das Erzeugen des GUIs
+     */
+    private Vector<String> abiszList;
+    private Vector<String> zbisaList;
     private JTabbedPane pane;
     private JLabel übersicht;
     private JList<String> personenListe;
-    private ArrayList<String> personen;
     private JPanel personenPanel;
     private JPanel personenListPanel;
-    private JPanel personenListButtonsPanel;
     private JPanel personenSuchPanel;
     private JPanel personenSuchEingabePanel;
     private JPanel personenSuchButtonPanel;
@@ -29,7 +35,6 @@ public class Uebersicht extends JPanel {
     private JPanel personenDetailBildNebenPanel;
     private JPanel personenDetailBildPanel;
     private JPanel personenDetailRollenPanel;
-    private JPanel funktionTeamPanel;
     private SpringLayout springLayout;
     private JScrollPane personenScrollPane;
     private GridBagConstraints gridBagConstraints;
@@ -52,8 +57,8 @@ public class Uebersicht extends JPanel {
     private JLabel funktion1;
     private JLabel teams1;
     private JTextField abteilungsField;
-    private JList funktionenBox;
-    private JList teamsBox;
+    private JTextField funktionenBox;
+    private JTextField teamsBox;
     private ArrayList<String> funktionenListe;
     private ArrayList<String> teamsListe;
 
@@ -78,27 +83,24 @@ public class Uebersicht extends JPanel {
 
     private JPanel filterSortierPanel;
 
-    private Company company;
+    private UebersichtFacade uebersichtFacade;
 
     /**
-     * Constructor to call up the createZordnungComponents-method
-     * @param pane to set the pane
-     * @param company to set the company
+     * Konstruktor für das Aufrufen der createZurodnungComponents-Methode
+     * @param pane Weitergabe des JTabbedPanes
      */
-    public Uebersicht(JTabbedPane pane, Company company){
+    public Uebersicht(JTabbedPane pane, UebersichtFacade uebersichtFacade){
         this.pane = pane;
-        this.company = company;
+        this.uebersichtFacade = uebersichtFacade;
         createZuordnungComponents();
         pane.addTab("Übersicht", mainPanel);
 
     }
 
     /**
-     * Method to initialize the components and adding it to the panels
+     * Methode zum Initialisieren der Attribute
      */
     public void createZuordnungComponents(){
-
-        ZuordnungFacade zuordnungFacade = new ZuordnungFacade(company);
 
         mainPanel = new JPanel(new BorderLayout());
 
@@ -136,6 +138,8 @@ public class Uebersicht extends JPanel {
         zBisABox = new JRadioButton("Z-A");
 
 
+
+
         filterPanel = new JPanel(new BorderLayout());
         filterComboList = new JPanel();
         filterComboList.setLayout(new GridBagLayout());
@@ -153,8 +157,22 @@ public class Uebersicht extends JPanel {
         //Betreffend Personen
         personenPanel.setBorder(BorderFactory.createTitledBorder("Personen:"));
         personenListe = new JList<>();
-        personenListe = new JList(zuordnungFacade.getMitarbeiterNameListe().toArray());
+
         übersicht = new JLabel("Übersicht");
+        Vector<String> persons = new Vector(Arrays.asList(uebersichtFacade.getMitarbeiterNameListe().toArray()));
+        Vector<String> oldPersons = new Vector(Arrays.asList(uebersichtFacade.getMitarbeiterNameListe().toArray()));
+        personenListe = new JList(persons.toArray());
+        personenListe.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() == 1) {
+                    int index = personenListe.getSelectedIndex();
+                    if (index >= 0) {
+                        field.setText(uebersichtFacade.getMitarbeiterListe().get(index).getFristName()+ " "+uebersichtFacade.getMitarbeiterListe().get(index).getLastName());
+
+                    }
+                }
+            }
+        });
         personenScrollPane = new JScrollPane(personenListe,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
         personenListPanel.add(personenScrollPane, BorderLayout.CENTER);
         personenListPanel.add(übersicht, BorderLayout.NORTH);
@@ -167,36 +185,57 @@ public class Uebersicht extends JPanel {
         suchButton.setIcon(searchBild);
         personenSuchEingabePanel.add(suchEingabe, BorderLayout.CENTER);
         personenSuchButtonPanel.add(suchButton,BorderLayout.WEST);
+        suchEingabe.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                suchEingabe.setText("");
+            }
+        });
+        suchButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Vector<String> foundItem = new Vector();
+                for (int i = 0; i < persons.size(); i++) {
+                    if (persons.get(i).contains(suchEingabe.getText())){
+                        foundItem.add(persons.get(i));
+                    }
+                }
+                personenListe.setListData(foundItem);
+            }
+        });
 
 
         //DetailPanel betreffend
         personenDetailPanel.setBorder(BorderFactory.createTitledBorder("Detail:"));
 
         name = new JLabel("Name:");
-        field = new JTextField(zuordnungFacade.getName(company.getPeople().get(0)));
+        field = new JTextField(uebersichtFacade.getMitarbeiterNameListe().get(0));
+        field.setEditable(false);
         platzhalter = new JLabel();
         bild = new JLabel();
         imageIcon = new ImageIcon(new ImageIcon("src/pic.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
         bild.setIcon(imageIcon);
 
-        abteilung = new JLabel("Abteilung:                       ");
+        abteilung = new JLabel("Abteilung: ");
         funktion = new JLabel("Funktion: ");
         teams = new JLabel("Teams: ");
         abteilung1 = new JLabel("Abteilung: ");
         funktion1 = new JLabel("Funktion: ");
         teams1 = new JLabel("Teams: ");
-        abteilungsField = new JTextField("Finance                     ");
+        abteilungsField = new JTextField(uebersichtFacade.getMitarbeiterListe().get(0).getDepartment().getName());
+        abteilungsField.setEditable(false);
+        abteilungsField.setPreferredSize(new Dimension(220, 20));
         funktionenListe = new ArrayList<>();
         funktionenListe.add("Funktion wählen");
         teamsListe=new ArrayList<>();
         teamsListe.add("Team wählen");
 
-        funktionenBox = new JList(zuordnungFacade.getAllJobFunctions().toArray());
-        JScrollPane scrollPane = new JScrollPane(funktionenBox,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setPreferredSize(new Dimension(180, 80));
-        teamsBox = new JList(zuordnungFacade.getAllTeams().toArray());
-        JScrollPane scrollPane1 = new JScrollPane(teamsBox,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane1.setPreferredSize(new Dimension(180, 80));
+        funktionenBox = new JTextField(uebersichtFacade.getMitarbeiterListe().get(0).getJobfunction());
+        funktionenBox.setPreferredSize(new Dimension(150, 30));
+        teamsBox = new JTextField(uebersichtFacade.getMitarbeiterListe().get(0).getTeam());
+        teamsBox.setPreferredSize(new Dimension(150, 30));
+        funktionenBox.setEditable(false);
+        teamsBox.setEditable(false);
 
 
 
@@ -206,7 +245,7 @@ public class Uebersicht extends JPanel {
         field.setColumns(20);
         personenDetailBildPanel.add(field);
 
-        springLayout.putConstraint(SpringLayout.EAST, bild, 288, SpringLayout.WEST, personenDetailBildPanel);
+        springLayout.putConstraint(SpringLayout.EAST, bild, 220, SpringLayout.WEST, personenDetailBildPanel);
         springLayout.putConstraint(SpringLayout.NORTH, bild, 20, SpringLayout.NORTH, personenDetailBildPanel);
         personenDetailBildPanel.add(bild);
 
@@ -227,7 +266,7 @@ public class Uebersicht extends JPanel {
 
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy=1;
-        personenDetailRollenPanel.add(scrollPane, gridBagConstraints);
+        personenDetailRollenPanel.add(funktionenBox, gridBagConstraints);
 
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy=1;
@@ -235,7 +274,7 @@ public class Uebersicht extends JPanel {
 
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy=1;
-        personenDetailRollenPanel.add(scrollPane1, gridBagConstraints);
+        personenDetailRollenPanel.add(teamsBox, gridBagConstraints);
 
         personenDetailBildMainPanel.add(personenDetailBildPanel, BorderLayout.CENTER);
         personenDetailBildMainPanel.add(personenDetailBildNebenPanel, BorderLayout.WEST);
@@ -255,13 +294,51 @@ public class Uebersicht extends JPanel {
         sortierKeine.add(keineBox, BorderLayout.CENTER);
         sortierAbisZ.add(aBisZBox, BorderLayout.CENTER);
         sortierZbisA.add(zBisABox, BorderLayout.CENTER);
+        keineBox.setSelected(true);
+        abiszList = new Vector<>(persons);
+        Collections.sort(abiszList);
+        zbisaList = new Vector<>(persons);
+        Collections.sort(zbisaList, Comparator.reverseOrder());
+        keineBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                keineBox.setSelected(true);
+                if (keineBox.isSelected() == true){
+                    aBisZBox.setSelected(false);
+                    zBisABox.setSelected(false);
+                    personenListe.setListData(persons);
+                }
+            }
+        });
+
+        aBisZBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (aBisZBox.isSelected() == true){
+                    keineBox.setSelected(false);
+                    zBisABox.setSelected(false);
+                    personenListe.setListData(abiszList);
+                }
+            }
+        });
+
+        zBisABox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (zBisABox.isSelected() == true){
+                    keineBox.setSelected(false);
+                    aBisZBox.setSelected(false);
+                    personenListe.setListData(zbisaList);
+                }
+            }
+        });
 
 
         //Filter
         filterPanel.setBorder(BorderFactory.createTitledBorder("Filter:"));
-        filterPanel.setPreferredSize(new Dimension(400,110));
+        filterPanel.setPreferredSize(new Dimension(550,110));
         filterPanel.add(filterComboList, BorderLayout.CENTER);
-        filterComboList.setPreferredSize(new Dimension(400,110));
+        filterComboList.setPreferredSize(new Dimension(550,110));
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy=0;
         filterComboList.add(filterAbteilungList, gridBagConstraints);
@@ -280,16 +357,103 @@ public class Uebersicht extends JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy=2;
         filterComboList.add(teams, gridBagConstraints);
-        filterAbteilungCombo = new JComboBox(zuordnungFacade.getAllDepartments().toArray());
-        filterFunktionCombo = new JComboBox(zuordnungFacade.getAllJobFunctions().toArray());
-        filterTeamCombo = new JComboBox(zuordnungFacade.getAllTeams().toArray());
+        filterAbteilungCombo = new JComboBox(uebersichtFacade.getAllDepartments().toArray());
+        filterFunktionCombo = new JComboBox(uebersichtFacade.getAllJobFunctions().toArray());
+        filterTeamCombo = new JComboBox(uebersichtFacade.getAllTeams().toArray());
         filterAbteilungCombo.setPreferredSize(new Dimension(200,30));
         filterFunktionCombo.setPreferredSize(new Dimension(200,30));
         filterTeamCombo.setPreferredSize(new Dimension(200, 30));
         filterAbteilungList.add(filterAbteilungCombo);
         filterFunktionsList.add(filterFunktionCombo);
         filterTeamList.add(filterTeamCombo);
+        filterAbteilungCombo.setEditable(false);
+        filterTeamCombo.setEditable(false);
+        filterFunktionCombo.setEditable(false);
+        filterAbteilungCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < uebersichtFacade.getAllDepartments().size(); i++) {
+                    if (filterAbteilungCombo.getSelectedItem() == uebersichtFacade.getMitarbeiterListe().get(i).getDepartment()){
+                        Vector<String> abteilungfilterlist = new Vector<>();
+                        abteilungfilterlist.add(uebersichtFacade.getMitarbeiterListe().get(i).getName());
+                    }
+                }
+            }
+        });
+        filterTeamCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < uebersichtFacade.getAllDepartments().size(); i++) {
+                    if (filterAbteilungCombo.getSelectedItem() == uebersichtFacade.getMitarbeiterListe().get(i).getTeam()){
+                        Vector<String> teamfilterlist = new Vector<>();
+                        teamfilterlist.add(uebersichtFacade.getMitarbeiterListe().get(i).getName());
+                    }
+                }
+            }
+        });
+        filterFunktionCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Vector<String> funktionfilterlist = new Vector<>();
+                for (int i = 0; i < uebersichtFacade.getAllDepartments().size(); i++) {
+                    if (filterAbteilungCombo.getSelectedItem() == uebersichtFacade.getMitarbeiterListe().get(i).getJobfunction()){
+                        funktionfilterlist.add(uebersichtFacade.getMitarbeiterListe().get(i).getName());
+                    }
+                }
+                personenListe.setListData(funktionfilterlist);
+            }
+        });
+        filterFunktionCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Vector<String> funktionfilterlist = new Vector<>();
+                for (int i = 0; i < uebersichtFacade.getAllDepartments().size(); i++) {
+                    if (filterAbteilungCombo.getSelectedItem() == uebersichtFacade.getMitarbeiterListe().get(i).getJobfunction()){
+                        funktionfilterlist.add(uebersichtFacade.getMitarbeiterListe().get(i).getName());
+                    }
+                }
+                personenListe.setListData(funktionfilterlist);
+            }
+        });
+        filterAbteilungCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Vector<String> abteilungFilterlist = new Vector<>();
+                for (int i = 0; i < uebersichtFacade.getAllDepartments().size(); i++) {
+                    if (filterAbteilungCombo.getSelectedItem() == uebersichtFacade.getMitarbeiterListe().get(i).getDepartment()){
+                        abteilungFilterlist.add(uebersichtFacade.getMitarbeiterListe().get(i).getName());
+                    }
+                }
+                personenListe.setListData(abteilungFilterlist);
+            }
+        });
+        filterTeamCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Vector<String> teamfilterlist = new Vector<>();
+                for (int i = 0; i < uebersichtFacade.getAllTeams().size(); i++) {
+                    if (filterTeamCombo.getSelectedItem() == uebersichtFacade.getMitarbeiterListe().get(i).getTeam()){
+                        teamfilterlist.add(uebersichtFacade.getMitarbeiterListe().get(i).getName());
+                    }
+                }
+                personenListe.setListData(teamfilterlist);
+            }
+        });
 
+
+        personenListe.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() == 1) {
+                    int index = personenListe.getSelectedIndex();
+                    if (index >= 0) {
+                        field.setText(uebersichtFacade.getMitarbeiterListe().get(index).getFristName()+ " "+uebersichtFacade.getMitarbeiterListe().get(index).getLastName());
+                        abteilungsField.setText(uebersichtFacade.getMitarbeiterListe().get(index).getDepartment().getName());
+                        funktionenBox.setText(uebersichtFacade.getMitarbeiterListe().get(index).getJobfunction());
+                        teamsBox.setText(uebersichtFacade.getMitarbeiterListe().get(index).getTeam());
+                    }
+                }
+            }
+        });
 
 
         //Panels zusammensetzen

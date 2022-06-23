@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Our Authentifizierungs-GUI for the TabbedPanes
@@ -26,7 +28,7 @@ public class Authentifizierung extends JDialog {
     private JPanel components;
     private JPanel buttons;
     private JButton abort, next;
-    private Company company;
+    private AuthentificationFacade authentificationFacade;
     private int tries =1;
     private boolean correct;
     private JFrame frame;
@@ -36,13 +38,19 @@ public class Authentifizierung extends JDialog {
     /**
      * Constructor to call up the createComponentsmethod
      * @param frame to set the frame
-     * @param company to set the company
+     * @param authentificationFacade to set the facade
      * @param pane to set the pane
      */
-    public Authentifizierung(JFrame frame, Company company, JTabbedPane pane){
+    public Authentifizierung(JFrame frame, AuthentificationFacade authentificationFacade, JTabbedPane pane){
         super(frame,true);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                pane.setSelectedIndex(0);
+            }
+        });
         this.dialog = this;
-        this.company = company;
+        this.authentificationFacade = authentificationFacade;
         this.frame = frame;
         this.pane = pane;
         setTitle("Authentifizierung");
@@ -55,8 +63,6 @@ public class Authentifizierung extends JDialog {
      * Method to initialize all components and adding to the panels
      */
     public void createComponents(){
-        AuthentificationFacade authentificationFacade = new AuthentificationFacade(company);
-
         this.getContentPane().setLayout(new BorderLayout());
         components = new JPanel(new GridLayout(2,2));
         buttons = new JPanel(new GridLayout(1,2));

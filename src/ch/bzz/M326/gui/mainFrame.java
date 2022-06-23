@@ -1,6 +1,13 @@
 package ch.bzz.M326.gui;
 
+import ch.bzz.M326.company.AuthentificationFacade;
 import ch.bzz.M326.company.Company;
+import ch.bzz.M326.company.StammdatenFacade;
+import ch.bzz.M326.employees.PersonErfassenFacade;
+import ch.bzz.M326.employees.PersonenFacade;
+import ch.bzz.M326.employees.UebersichtFacade;
+import ch.bzz.M326.employees.ZuordnungFacade;
+import ch.bzz.M326.log.LogBookFacade;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -26,7 +33,15 @@ public class mainFrame extends JFrame {
     /**
      * Constructor to set all components to the Panel
      */
-    public mainFrame(Company company){
+    public mainFrame(
+        StammdatenFacade stammdatenFacade,
+        AuthentificationFacade authentificationFacade,
+        PersonenFacade personenFacade,
+        PersonErfassenFacade personErfassenFacade,
+        UebersichtFacade uebersichtFacade,
+        ZuordnungFacade zuordnungFacade,
+        LogBookFacade logBookFacade
+    ){
 
         setVisible(true);
         setResizable(false);
@@ -36,17 +51,17 @@ public class mainFrame extends JFrame {
         this.frame = this;
         pane = new JTabbedPane();
         getContentPane().add(pane);
-        uebersichtTab = new Uebersicht(pane, company);
-        zuordnungTab = new Zuordnung(pane, company);
-        personenTab = new Personen(pane, company);
-        stammdatenTab = new Stammdaten(pane, company);
-        logbuchTab = new Logbuch(pane, company);
+        uebersichtTab = new Uebersicht(pane, uebersichtFacade);
+        zuordnungTab = new Zuordnung(pane, zuordnungFacade);
+        personenTab = new Personen(pane, personenFacade, personErfassenFacade);
+        stammdatenTab = new Stammdaten(pane, stammdatenFacade);
+        logbuchTab = new Logbuch(pane, logBookFacade);
 
         pane.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (pane.getSelectedIndex() != 0){
-                    authentifizierung = new Authentifizierung(frame, company, pane);
+                    authentifizierung = new Authentifizierung(frame, authentificationFacade, pane);
                 }
             }
         });

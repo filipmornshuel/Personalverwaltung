@@ -1,13 +1,10 @@
-import ch.bzz.M326.company.Company;
-import ch.bzz.M326.company.Department;
-import ch.bzz.M326.company.JobFunctions;
-import ch.bzz.M326.company.Team;
-import ch.bzz.M326.employees.HRPerson;
-import ch.bzz.M326.employees.Participation;
-import ch.bzz.M326.employees.Person;
+import ch.bzz.M326.company.*;
+import ch.bzz.M326.employees.*;
 import ch.bzz.M326.gui.Logbuch;
+import ch.bzz.M326.gui.Zuordnung;
 import ch.bzz.M326.gui.mainFrame;
 import ch.bzz.M326.log.LogBook;
+import ch.bzz.M326.log.LogBookFacade;
 import ch.bzz.M326.log.Useraction;
 
 import javax.swing.*;
@@ -276,7 +273,15 @@ public class App {
       company.addHRPerson(hrPerson1);
       company.addHRPerson(hrPerson2);
 
-      mainFrame mainFrame = new mainFrame(company);
+      StammdatenFacade stammdatenFacade = new StammdatenFacade(company);
+      AuthentificationFacade authentificationFacade = new AuthentificationFacade(company);
+      PersonenFacade personenFacade = new PersonenFacade(company);
+      PersonErfassenFacade personErfassenFacade = new PersonErfassenFacade(company);
+      UebersichtFacade uebersichtFacade = new UebersichtFacade(company);
+      ZuordnungFacade zuordnungFacade = new ZuordnungFacade(company);
+      LogBookFacade logBookFacade = new LogBookFacade(company);
+
+      mainFrame mainFrame = new mainFrame(stammdatenFacade, authentificationFacade, personenFacade, personErfassenFacade, uebersichtFacade, zuordnungFacade, logBookFacade);
 
       System.out.println(person1.getFristName());
       System.out.println(person2.getFristName());
@@ -294,10 +299,6 @@ public class App {
       System.out.println(person14.getFristName());
       System.out.println(person15.getFristName());
       System.out.println(person16.getFristName());
-
-
-
-
    }
 
    public Person randomPerson(){

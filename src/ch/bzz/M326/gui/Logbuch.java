@@ -1,6 +1,7 @@
 package ch.bzz.M326.gui;
 
 import ch.bzz.M326.company.Company;
+import ch.bzz.M326.log.LogBookFacade;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,23 +18,23 @@ public class Logbuch extends JPanel{
     private JScrollPane logScrollPane;
     private JTextArea logArea;
 
-    private Company company;
+    private LogBookFacade logBookFacade;
     /**
      * Constructor for the LogBuch
      * @param pane to set the JTabbedPane
-     * @param company to set the company
+     * @param logBookFacade to set the facade
      */
-    public Logbuch(JTabbedPane pane, Company company){
+    public Logbuch(JTabbedPane pane, LogBookFacade logBookFacade){
         this.pane = pane;
-        this.company = company;
+        this.logBookFacade = logBookFacade;
 
         logPanel = new JPanel(new BorderLayout());
         logArea = new JTextArea();
         logArea.setEditable(true);
         logScrollPane = new JScrollPane(logArea,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
         logPanel.add(logScrollPane, BorderLayout.CENTER);
-        for (int i = 0; i < company.getLogBook().getSize(); i++) {
-            logArea.setText(logArea.getText() + company.getLogBook().getEntry(i) + "\n");
+        for (int i = 0; i < logBookFacade.getAllEntries(logBookFacade.getLogBook()).size(); i++) {
+            logArea.setText(logArea.getText() + logBookFacade.getLogBook().getEntry(i) + "\n");
         }
         pane.addTab("Logbuch",logPanel);
     }
